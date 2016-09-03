@@ -2,42 +2,74 @@ let express = require('express'),
 		User = require('../models/User'),
 		userRouter = express.Router();
 
-		userRouter.route('/users')
+//AUTHENTICATION IS NEXT. Can only access this stuff if the user is authenticated!
 
-		.post((req, res) => {
-			let user = new User();
+userRouter.route('/users')
 
-			user.username = req.body.username;
-			user.password = req.body.password;
+	//CREATE a new user (Combine this with PUT somehow?)
 
+	.post((req, res) => {
+		let user = new User();
+
+		user.username = req.body.username;
+		user.password = req.body.password;
+
+		user.save((err) => {
+			if (err) {
+				if (err.code == 11000) {
+					return res.json({success: false, message: "A user with that name already exists"});
+				}
+				else {
+					return res.send(err);
+				}
+			}
+			res.json({ message: 'User created!' })
+		})
+	})
+
+	//GET all of the users
+	.get((req, res) => {
+		User.find({}, (err, users) => {
+			if (err) {
+				res.send(err);
+			}
+			res.json(users);
+		})
+	})
+
+userRouter.route('/users/:userId')
+
+	//UPDATE a user's info
+	.put((req, res) => {
+		User.findById(req.params.userId, (err, user) => {
+			if (err) {
+				return res.send(err);
+			}
+			if (req.body.username) {
+				user.username = req.body.username;
+			}
+			if (req.body.password) {
+				user.password = req.body.password;
+			}
 			user.save((err) => {
 				if (err) {
-					if (err.code == 11000) {
-						return res.json({success: false, message: "A user with that name already exists"});
-					}
-					else {
-						return res.send(err);
-					}
+					return res.send(err)
 				}
-				res.json({ message: 'User created!'})
+				res.json({ message: 'User updated!' })
 			})
 		})
+	})
 
-		.get((req, res) => {
-			User.find({}, (err, users) => {
-				if (err) {
-					res.send(err);
-				}
-				res.json(users);
-			})
+	//DELETE a user
+	.delete((req, res) => {
+		User.findOneAndRemove(req.params.userId, (err) => { 
+			if (err) {
+				return res.send(err)
+			} 
+			else {
+				res.json({message: "Successfully removed User!"})
+			}
 		})
-
-		// .put('/users/:userId', (req, res) => {
-			
-		// })
-
-		// .delete('/users/:userId' (req, res) => {
-
-		// })
+	})
 
 module.exports = userRouter;

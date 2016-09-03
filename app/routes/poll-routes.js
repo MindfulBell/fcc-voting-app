@@ -2,16 +2,18 @@ let express = require('express'),
 		pollRouter = express.Router(),
 		Poll = require('../models/Poll');
 
+
+//AUTHENTICATION IS NEXT. Can only access this stuff if the user is authenticated!
+
 pollRouter.route('/polls')
 	
-	//create a new poll
+	// **CREATE** a new pull
 		.post((req, res) => {
 			let poll = new Poll();
 
 			poll.createdBy = req.body.createdBy;
 			poll.title = req.body.title;
 			poll.options = req.body.options;
-
 			poll.save((err) => {
 				if (err) {
 					return res.send(err);
@@ -21,7 +23,7 @@ pollRouter.route('/polls')
 			
 		})
 
-	//get all of the polls
+	// **GET** all of the polls
 		.get((req, res) => {
 			Poll.find({}, (err, polls) => {
 				if (err) {
@@ -31,70 +33,73 @@ pollRouter.route('/polls')
 			})
 		})
 
-pollRouter.route('/polls/:pollId')
+pollRouter.route('/polls/:id?')
 
+	// **GET** all polls created by user, or single poll
 		.get((req, res) => {
-			let pollId = req.params.pollId;
-			Poll.findById(pollId, (err, poll) => {
+			let id = req.params.id;
+			let userQuery = req.query.q === 'user';
+
+			// if we supplied a userId, get all the polls they made
+			if (userQuery) {
+				let createdBy = req.params.id;
+				Poll.find( {createdBy}, (err, polls) => {
+					if (err) {
+						return res.send(err)
+					}
+					 res.json(polls);
+				})
+			}
+			// else, we are just finding a single poll, so get that
+			else {
+				Poll.findById(id, (err, poll) => {
+					if (err) {
+						return res.send(err)
+					}
+					res.json(poll);
+				})		
+			}
+		})		
+
+	// **PATCH** update a poll with either a vote increase, or a newly added option
+		.patch((req, res) => {
+			Poll.findById(req.params.id, (err, poll) => {
 				if (err) {
 					return res.send(err)
 				}
-				res.json(poll);
-			})
-		})
-
-//update a poll with either a vote increase, or a newly added option
-		.put((req, res) => {
-			let pollId = req.params.pollId;
-			Poll.findById(pollId, (err, poll) => {
-
-				//voted on something
-				//need to add some kind of validation/check that they haven't voted already? ip?
-				if (req.body.votedFor) {
-					poll.options = poll.options.map((option) => {
-						if (option.optionName === req.body.votedFor) {
-							option.votes += 1;
-						}
-						return option;
-					})
-				}
-
-				//added and voted for a new option
-				if (req.body.newOption) {
-					let currentOptions = poll.options.map((option) => { return option.optionName.toLowerCase() })
-					let newOption = req.body.newOption;
-
-					if (currentOptions.includes(newOption.toLowerCase())) {
-						return res.json({message: "That option exists already!"})
+				//need to add some kind of validation/check that they haven't voted already?
+				let userVote = req.body.votedFor.toLowerCase();
+				let newOption = true;
+				poll.options.forEach((option) => {
+					if (option.optionName === userVote) {
+						option.votes += 1;
+						newOption = false;
 					}
-					else {
-						poll.options = [...poll.options, {optionName: req.body.newOption, votes: 1}]						
-					}
+					return option;
+				})
+
+				if (newOption) {
+					poll.options = [...poll.options, { optionName: userVote, votes: 1 }];
 				}
 
 				poll.save((err) => {
 						if (err) {
-							res.send(err);
+							return res.send(err);
 						}
-
-						res.json(poll)
+						return res.json({message: "Successfully updated and/or voted!"})
 					})
-				
 			})
 		})
 
-// find all polls created by a user (using the user ID)
-pollRouter.route('/polls/:userId')
-
-	.get((req, res) => {
-		console.log(req.params.userId)
-		let createdBy = req.params.userId;
-		Poll.find( {createdBy}, (err, polls) => {
-			if (err) {
-				return res.send(err)
-			}
-			res.json(polls);
+		.delete((req, res) => {
+			Poll.findOneAndRemove(req.params.id, (err) => { 
+				if (err) {
+					return res.send(err)
+				} 
+				else {
+					res.json({message: "Successfully removed poll!"})
+				}
+			})
 		})
-	})
 
 module.exports = pollRouter;
