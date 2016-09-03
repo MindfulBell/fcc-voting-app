@@ -49,13 +49,27 @@ pollRouter.route('/polls/:pollId')
 			Poll.findById(pollId, (err, poll) => {
 
 				//voted on something
-				if (req.body.option) {
-					//go through array of options in the poll.options array
+				//need to add some kind of validation/check that they haven't voted already? ip?
+				if (req.body.votedFor) {
+					poll.options = poll.options.map((option) => {
+						if (option.optionName === req.body.votedFor) {
+							option.votes += 1;
+						}
+						return option;
+					})
 				}
 
-				//added a new option
+				//added and voted for a new option
 				if (req.body.newOption) {
-					// add a new option to vote on...spread operator?
+					let currentOptions = poll.options.map((option) => { return option.optionName.toLowerCase() })
+					let newOption = req.body.newOption;
+
+					if (currentOptions.includes(newOption.toLowerCase())) {
+						return res.json({message: "That option exists already!"})
+					}
+					else {
+						poll.options = [...poll.options, {optionName: req.body.newOption, votes: 1}]						
+					}
 				}
 
 				poll.save((err) => {

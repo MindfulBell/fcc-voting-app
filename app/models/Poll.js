@@ -4,7 +4,7 @@ let mongoose = require('mongoose'),
 let PollSchema = new Schema({
 	createdBy: { type: String, required: true },
 	title: { type: String, required: true },
-	options: [ { option: String, votes: Number } ],
+	options: [ { optionName: String, votes: Number } ],
 	totalVotes: { type: Number }
 });
 
