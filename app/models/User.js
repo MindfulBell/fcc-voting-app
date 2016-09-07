@@ -20,7 +20,7 @@ let UserSchema = new Schema({
 			validator: (v) => { 
 				return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\/!@#$%^&*()_-]).*$/g.test(v); 
 			},
-			message: 'Password must contain 1 uppercase letter, 1 lowercase letter, and 1 special character!',
+			message: 'Password must contain one of: uppercase letter, lowercase letter, special character, and number',
 		} 
 	}
 })
@@ -41,7 +41,8 @@ UserSchema.pre('save', function(next){
 	})
 })
 
-UserSchema.methods.comparePassword = (password) => {
+UserSchema.methods.comparePassword = function(password){
+	let user = this;
 	return bcrypt.compareSync(password, user.password);
 }
 

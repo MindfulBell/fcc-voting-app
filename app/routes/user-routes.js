@@ -2,7 +2,7 @@ let express = require('express'),
 		User = require('../models/User'),
 		userRouter = express.Router();
 
-//AUTHENTICATION IS NEXT. Can only access this stuff if the user is authenticated!
+// DO I NEED TO AUTHENTICATE HERE??
 
 userRouter.route('/users')
 
