@@ -7,7 +7,7 @@ let express = require('express'),
 		port = process.env.PORT || 3000,
 		userRouter = require('./app/routes/user-routes'),
 		pollRouter = require('./app/routes/poll-routes'),
-		authenticate = require('./app/routes/authenticate'),
+		authenticate = require('./app/middleware/authenticate'),
 		db = 'mongodb://MindfulBell:Dontmlab02!@ds011321.mlab.com:11321/fcc-tb';
 
 mongoose.connect(db);
