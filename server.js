@@ -1,3 +1,4 @@
+require('dotenv').config();
 let express = require('express'),
 		app = express(),
 		morgan = require('morgan'),
@@ -8,7 +9,7 @@ let express = require('express'),
 		userRouter = require('./app/routes/user-routes'),
 		pollRouter = require('./app/routes/poll-routes'),
 		authenticate = require('./app/middleware/authenticate'),
-		db = 'mongodb://MindfulBell:Dontmlab02!@ds011321.mlab.com:11321/fcc-tb';
+		db = process.env.DB_URL;
 
 mongoose.connect(db);
 

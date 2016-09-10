@@ -11,7 +11,7 @@ pollRouter.get('/polls', (req, res) => {
 	PollController.getPolls(res);
 });
 
-// **GET** a single poll based on poll id, does not need AUTH
+// **GET** a single poll based on poll id
 pollRouter.get('/polls/single/:id', (req, res) => {
 	PollController.getPolls(res, {_id: req.params.id});
 });

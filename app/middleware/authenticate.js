@@ -1,5 +1,5 @@
 let User = require('../models/User'),
-		secret = 'topsecretformyglipglops', //when pushed up to Heroku, definitely need to use env variables
+		secret = process.env.SECRET_KEY,
 		jwt = require('jsonwebtoken');
 
 let authenticate = {

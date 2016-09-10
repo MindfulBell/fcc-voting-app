@@ -37,7 +37,7 @@ class PollController {
 		});	
 	}
 
-	createPoll (newPoll, res) {
+	createPoll(newPoll, res) {
 		let poll = new Poll(newPoll);
 		this.savePoll(poll, res);
 	}
