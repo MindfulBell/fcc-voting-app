@@ -8,20 +8,16 @@ const INITIAL_POLLS_STATE = {
 export default function (state = INITIAL_POLLS_STATE, action) {
 	switch (action.type) {
 		case GET_POLLS: 
-
 			//go into data and build a new array with titles and ids
-			let pollsList = state.payload.map((poll) => {
+			let pollsList = action.payload.data.map((poll) => {
 				return {
 					'title': poll.title,
 					'id': poll._id
-				}
-				// for (let prop in poll) {
-				// 	if (poll.hasOwnProperty(prop) && (prop === 'title' || prop === '_id') {
-				// 		pollObj[prop] = poll[prop];
-				// 	}
-				// }				
+				}				
 			});
 			return Object.assign({}, state, { pollsList });
+		case GET_ACTIVE_POLL: 
+			return state;
 		default: 
 			return state;
 	}
