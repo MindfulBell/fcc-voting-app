@@ -1,21 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
+import routes from './routes';
+import { Router, browserHistory } from 'react-router';
+import promise from 'redux-promise';
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+const storeWithMiddleware = applyMiddleware(promise)(createStore);
 
-	render() {
-		return (
-			<div>
-				<h1> Hello BACON asdf FOR IT! </h1>
-			</div>
-		)
-	}
-}
-
-render(<App/>, document.getElementById('app'));
+render(
+	<Provider store={storeWithMiddleware(reducers)}>
+		<Router history={browserHistory} routes={routes} />
+	</Provider>, document.getElementById('app')
+);

@@ -28,10 +28,10 @@ const config = {
 		]
 	},
 	devServer: {
+		historyApiFallback: true,
 		contentBase: path.join('./client/public'),
 		hot: true,
 		inline: true,
-		progress: true,
 		stats: {
 			colors: true
 		}

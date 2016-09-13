@@ -6,9 +6,9 @@ let express = require('express'),
 		bodyParser = require('body-parser'),
 		mongoose = require('mongoose'),
 		port = process.env.PORT || 3000,
-		userRouter = require('./app/routes/user-routes'),
-		pollRouter = require('./app/routes/poll-routes'),
-		authenticate = require('./app/middleware/authenticate'),
+		userRouter = require('./server/routes/user-routes'),
+		pollRouter = require('./server/routes/poll-routes'),
+		authenticate = require('./server/middleware/authenticate'),
 		db = process.env.DB_URL;
 
 mongoose.connect(db);
