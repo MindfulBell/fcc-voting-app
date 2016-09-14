@@ -1,0 +1,32 @@
+What are the different 'pages' to display in my app? 
+
+Main page, lists all of the polls and a navbar at the top with login button
+
+	ROUTE - '/' - index route - main call to GET api/polls
+		each poll is a box with a random color in the background? I dunno
+		if logged in, top navbar has logout and a My Polls button instead
+
+	ROUTE - '/poll/new' - make a new poll (if authenticated), will use POST api/polls
+
+	ROUTE - '/poll/idOfPoll - view a poll, will use GET api/polls/single/:id
+
+	ROUTE - '/user/userId' - Users page where they can view/delete/modify their polls
+
+
+
+
+What type of State do I need to keep track of? 
+
+	User state
+		default, not logged in, no user
+		once logged in, store user _id, username, and token in state
+
+	Poll state
+		Active Poll state, just having whatever poll we need to show on screen with content
+		List of Polls state, just a big list of all the possible polls
+
+	bring in all the data right at the start and just model it up front in redux? 
+		+ don't have to make a ton of different ajax calls
+		- defeating purpose of the backend routes? 
+
+Where do I do my ajax calls? 

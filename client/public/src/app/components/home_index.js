@@ -6,22 +6,37 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getPolls } from '../actions/index';
+import { getPolls, setActivePoll } from '../actions/index';
 
 import PollLink from './poll-link';
 
 class HomeIndex extends Component {
 	constructor(props) {
 		super(props);
+
+		this.setActivePoll = this.setActivePoll.bind(this);
 	}	
 
 	componentWillMount() {
+		// get all the polls for the main page
 		this.props.getPolls();
 	}
 
+	setActivePoll(id) {
+		// dispatches active poll action to redux
+		this.props.setActivePoll(id);
+	}
+
 	render() {
+		// HOW DO I SET UP THE /POLL/:POLLID Route? I can't get params working...
 		const polls = this.props.pollsList.map((poll, ind) => {
-			return <PollLink title={poll.title} id={poll.id} key={ind}/>
+			return (
+				<PollLink
+				setActivePoll={this.setActivePoll}
+				title={poll.title} 
+				id={poll.id} 
+				key={ind} />
+			)
 		})
 
 		return (
@@ -46,7 +61,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-			getPolls: () => {dispatch(getPolls())}
+			getPolls: () => {dispatch(getPolls())},
+			setActivePoll: (id) => {dispatch(setActivePoll(id))}
 		}
 	}
 

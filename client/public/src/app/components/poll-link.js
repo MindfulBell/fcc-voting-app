@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 
 export default (props) => {
 	return (
-		<Link to='/poll'>
-			<div className='poll-link' data-id={props.id}>
+		<Link to={`/poll/${props.id}`}>
+			<div className='poll-link'>
 				<h3>{props.title}</h3>
 			</div>
 		</Link>

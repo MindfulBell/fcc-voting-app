@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const ROOT_API = '127.0.0.1/api';
+const ROOT_API = 'http://localhost:3000/api';
 const POLL_API = '/polls';
+const USER_API = '/user';
 
 export const GET_POLLS = 'GET_POLLS';
 export function getPolls() {
-	const payload = axios.get('http://localhost:3000/api/polls');
+	const payload = axios.get(`${ROOT_API}${POLL_API}`);
 
 	return {
 		type: GET_POLLS,
@@ -13,7 +14,11 @@ export function getPolls() {
 	}
 }
 
-export const GET_ACTIVE_POLLS = 'GET_ACTIVE_POLLS';
-export function getActivePolls() {
-	// where is this dispatched? 
+export const SET_ACTIVE_POLL = 'SET_ACTIVE_POLL';
+export function setActivePoll(id) {
+	const payload = axios.get(`${ROOT_API}${POLL_API}/single/${id}`);
+	return {
+		type: SET_ACTIVE_POLL,
+		payload
+	}
 }

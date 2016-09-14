@@ -22,6 +22,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// NEED TO ADD THIS AS A FALLBACK TO ALL ROUTES IN ROUTER
+// app.get('*', function (request, response){
+//   response.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+// })
+
 app.get('/', (req, res)=>{
 	res.send('HELLO THERE!');
 })

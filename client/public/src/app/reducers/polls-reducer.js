@@ -1,4 +1,4 @@
-import { GET_POLLS } from '../actions/index';
+import { GET_POLLS, SET_ACTIVE_POLL } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
@@ -7,8 +7,8 @@ const INITIAL_POLLS_STATE = {
 
 export default function (state = INITIAL_POLLS_STATE, action) {
 	switch (action.type) {
+
 		case GET_POLLS: 
-			//go into data and build a new array with titles and ids
 			let pollsList = action.payload.data.map((poll) => {
 				return {
 					'title': poll.title,
@@ -16,8 +16,12 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 				}				
 			});
 			return Object.assign({}, state, { pollsList });
-		case GET_ACTIVE_POLL: 
-			return state;
+
+		case SET_ACTIVE_POLL: 
+			let activePoll = action.payload.data[0];
+			console.log(activePoll);
+			return Object.assign({}, state, { activePoll });
+
 		default: 
 			return state;
 	}
