@@ -1,6 +1,7 @@
 require('dotenv').config();
 let express = require('express'),
 		app = express(),
+		cors = require('cors'),
 		morgan = require('morgan'),
 		path = require('path'),
 		bodyParser = require('body-parser'),
@@ -16,11 +17,13 @@ mongoose.connect(db);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//   res.header("Access-Control-Allow-Methods", "GET POST PUT PATCH DELETE");
+//   next();
+// });
 
 // NEED TO ADD THIS AS A FALLBACK TO ALL ROUTES IN ROUTER
 // app.get('*', function (request, response){

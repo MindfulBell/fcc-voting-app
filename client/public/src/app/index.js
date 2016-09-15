@@ -6,8 +6,9 @@ import reducers from './reducers';
 import routes from './routes';
 import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
+import thunk from 'redux-thunk';
 
-const storeWithMiddleware = applyMiddleware(promise)(createStore);
+const storeWithMiddleware = applyMiddleware(promise, thunk)(createStore);
 
 render(
 	<Provider store={storeWithMiddleware(reducers)}>

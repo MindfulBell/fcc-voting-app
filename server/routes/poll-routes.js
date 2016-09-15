@@ -13,7 +13,7 @@ pollRouter.get('/polls', (req, res) => {
 
 // **GET** a single poll based on poll id
 pollRouter.get('/polls/single/:id', (req, res) => {
-	PollController.getPolls(res, {_id: req.params.id});
+	PollController.getSinglePoll(res, {_id: req.params.id});
 });
 
 // **PATCH** vote +1 on a poll

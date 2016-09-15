@@ -1,4 +1,4 @@
-import { GET_POLLS, SET_ACTIVE_POLL } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
@@ -17,9 +17,8 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 			});
 			return Object.assign({}, state, { pollsList });
 
-		case SET_ACTIVE_POLL: 
-			let activePoll = action.payload.data[0];
-			console.log(activePoll);
+		case REFRESH_POLL: 
+			let activePoll = action.poll ? action.poll : {};
 			return Object.assign({}, state, { activePoll });
 
 		default: 

@@ -13,8 +13,6 @@ import PollLink from './poll-link';
 class HomeIndex extends Component {
 	constructor(props) {
 		super(props);
-
-		this.setActivePoll = this.setActivePoll.bind(this);
 	}	
 
 	componentWillMount() {
@@ -22,17 +20,11 @@ class HomeIndex extends Component {
 		this.props.getPolls();
 	}
 
-	setActivePoll(id) {
-		// dispatches active poll action to redux
-		this.props.setActivePoll(id);
-	}
-
 	render() {
 		// HOW DO I SET UP THE /POLL/:POLLID Route? I can't get params working...
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
 				<PollLink
-				setActivePoll={this.setActivePoll}
 				title={poll.title} 
 				id={poll.id} 
 				key={ind} />
@@ -41,7 +33,7 @@ class HomeIndex extends Component {
 
 		return (
 			<div>
-			<h1> I AM HOME </h1>
+			<h1> Home Page </h1>
 				<div className='poll-list'>
 					{polls}
 				</div>

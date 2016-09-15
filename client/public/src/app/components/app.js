@@ -8,7 +8,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1> Hello BACON asdf FOR IT! </h1>
+				<h1> Welcome to my awesome Voting App! </h1>
 				{this.props.children}
 			</div>
 		)
