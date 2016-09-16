@@ -9,7 +9,7 @@ export default function makeAxiosRequest(type, url, body = {}) {
 		case 'delete':
 
 		case 'post':
-
+			return axios.post(url, body);
 		default:
 			return 'No request made!';
 	}

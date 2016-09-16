@@ -29,6 +29,8 @@ let authenticate = {
 						expiresIn: '12h'
 					});
 					res.json({
+						username: user.username,
+						id: user._id,
 						success: true,
 						message: 'Token granted.',
 						token: token

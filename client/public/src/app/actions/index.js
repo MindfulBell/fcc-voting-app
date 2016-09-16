@@ -17,10 +17,9 @@ export function getPolls() {
 
 // POLL ACTIONS
 
-// using redux-thunk to allow for asynch dispatching!
-
+export const REFRESH_POLL = 'REFRESH_POLL';
 export function refreshPoll(pollId, votedFor = null, newOption = null) {
-	let url, type;
+	let url, type, payload;
 
 	if (votedFor) {
 		// need to +1 an option, call is diff
@@ -35,15 +34,18 @@ export function refreshPoll(pollId, votedFor = null, newOption = null) {
 		url = `${ROOT_API}${POLL_API}/single/${pollId}`;
 		type = 'get';
 	}
-		return function(dispatch) {
-			return makeAxiosRequest(type, url, {votedFor}).then((response) => { dispatch(processRefresh(response.data)) })
-		}
-}
-
-export const REFRESH_POLL = 'REFRESH_POLL';
-export function processRefresh(poll) {
+	payload = makeAxiosRequest(type, url, {votedFor});
 	return {
 		type: REFRESH_POLL,
-		poll
+		payload
+	}
+}
+
+export const LOGIN_USER = 'LOGIN_USER';
+export function processUserLogin(user = {}) {
+	let payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user);
+	return {
+		type: LOGIN_USER,
+		payload
 	}
 }

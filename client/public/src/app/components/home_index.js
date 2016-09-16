@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getPolls, setActivePoll } from '../actions/index';
+import { Link } from 'react-router';
 
 import PollLink from './poll-link';
 
@@ -21,7 +22,6 @@ class HomeIndex extends Component {
 	}
 
 	render() {
-		// HOW DO I SET UP THE /POLL/:POLLID Route? I can't get params working...
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
 				<PollLink
@@ -33,9 +33,20 @@ class HomeIndex extends Component {
 
 		return (
 			<div>
-			<h1> Home Page </h1>
-				<div className='poll-list'>
-					{polls}
+				<div className='navbar'>
+					<ul>
+						<Link to='/user/new'>
+							<li> Login </li>
+						</Link>
+						<li> Register </li>
+						<li> My Polls </li>
+					</ul>
+				</div>
+				<div>
+				<h1> Home Page </h1>
+					<div className='poll-list'>
+						{polls}
+					</div>
 				</div>
 			</div>
 		)
