@@ -3,7 +3,7 @@ import makeAxiosRequest from '../helpers/axios-helper';
 
 const ROOT_API = 'http://127.0.0.1:3000/api';
 const POLL_API = '/polls';
-const USER_API = '/user';
+const USER_API = '/users';
 
 export const GET_POLLS = 'GET_POLLS';
 export function getPolls() {
@@ -34,18 +34,38 @@ export function refreshPoll(pollId, votedFor = null, newOption = null) {
 		url = `${ROOT_API}${POLL_API}/single/${pollId}`;
 		type = 'get';
 	}
-	payload = makeAxiosRequest(type, url, {votedFor});
+	payload = makeAxiosRequest(type, url, {votedFor}).catch((e)=>{ console.log(e)});
 	return {
 		type: REFRESH_POLL,
 		payload
 	}
 }
 
+// USER ACTIONS
+
+
 export const LOGIN_USER = 'LOGIN_USER';
-export function processUserLogin(user = {}) {
-	let payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user);
-	return {
-		type: LOGIN_USER,
-		payload
+export function loginUser(user = {}, newUser = false) {
+	let payload;
+	if (newUser) {
+
+		return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
+			.then(() => {
+				payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user);
+				return {
+					type: LOGIN_USER,
+					payload
+				}
+		}).catch((e) => { console.log(e) });
+
+	}
+
+	else {
+		payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+			.catch((e) => { console.log(e)});
+		return {
+			type: LOGIN_USER,
+			payload
+		}
 	}
 }

@@ -35,10 +35,12 @@ class HomeIndex extends Component {
 			<div>
 				<div className='navbar'>
 					<ul>
-						<Link to='/user/new'>
+						<Link to='/user/login'>
 							<li> Login </li>
 						</Link>
-						<li> Register </li>
+						<Link to='/user/new'>
+							<li> Register </li>
+						</Link>
 						<li> My Polls </li>
 					</ul>
 				</div>

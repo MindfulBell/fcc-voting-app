@@ -4,7 +4,9 @@ const INITIAL_USER_STATE = {
 	username: '',
 	token: '',
 	id: '',
-	loggedIn: false
+	loggedIn: false,
+	validate: {},
+	auth: {}
 }
 
 export default function (state = INITIAL_USER_STATE, action) {
@@ -12,8 +14,11 @@ export default function (state = INITIAL_USER_STATE, action) {
 		// case CREATE_USER:
 		// 	return Object.assign({}, state, action.user);
 		case LOGIN_USER:
-			if (action.payload.data.token) {
+			if (action.payload.data.auth.token) {
 				return Object.assign({}, state, action.payload.data, {loggedIn: true});
+			}
+			else {
+				return Object.assign({}, state, { auth: { success: false } });
 			}
 		default: 
 			return state;

@@ -4,6 +4,7 @@ let User = require('../models/User'),
 
 let authenticate = {
 	encode: function(req, res){
+		console.log(req.body);
 		User.findOne({username: req.body.username}).select('username password').exec((err, user) => {
 			if (err) {
 				throw err;
@@ -11,15 +12,19 @@ let authenticate = {
 			if (!user) {
 
 				res.json({
-					success: false,
-					message: 'Authentication failed.'
+					auth: {
+						success: false,
+						message: 'Authentication failed.'
+					}
 				});
 			}
 			else if (user) {
 				if (!user.comparePassword(req.body.password)) {
 					res.json({
-						success: false,
-						message: 'Authentication failed.'
+						auth: {
+							success: false,
+							message: 'Authentication failed.'
+						}
 					});
 				}
 				else {
@@ -28,12 +33,14 @@ let authenticate = {
 					}, secret, {
 						expiresIn: '12h'
 					});
+
 					res.json({
 						username: user.username,
 						id: user._id,
-						success: true,
-						message: 'Token granted.',
-						token: token
+						auth: {
+							success: true,
+							token: token
+						}
 					});
 				}
 			}

@@ -18,7 +18,7 @@ let UserSchema = new Schema({
 		maxlength: 100, 
 		validate: { 
 			validator: (v) => { 
-				return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\/!@#$%^&*()_-]).*$/g.test(v); 
+				return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/g.test(v); 
 			},
 			message: 'Password must contain one of: uppercase letter, lowercase letter, special character, and number',
 		} 
