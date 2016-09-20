@@ -11,11 +11,9 @@ const INITIAL_USER_STATE = {
 
 export default function (state = INITIAL_USER_STATE, action) {
 	switch (action.type) {
-		// case CREATE_USER:
-		// 	return Object.assign({}, state, action.user);
 		case LOGIN_USER:
 			if (action.payload.data.auth.token) {
-				return Object.assign({}, state, action.payload.data, {loggedIn: true});
+				return Object.assign({}, state, action.payload.data, { loggedIn: true });
 			}
 			else {
 				return Object.assign({}, state, { auth: { success: false } });

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { loginUser } from '../actions/index';
+import { loginRequest } from '../actions/index';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 class LoginUser extends Component {
 	constructor(props) {
@@ -19,15 +20,20 @@ class LoginUser extends Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps){
+		if (nextProps.user.loggedIn) { 
+			browserHistory.push('/'); 
+		}
+	}
+
 	onFormSubmit(params) {
 		// if a new user, gotta create it first, otherwise, just login
-		console.log(params);
-		this.props.loginUser(params, this.state.new);
+		this.props.loginRequest(params, this.state.new);
 	}
 
 	render() {
-		console.log(this.props.user);
 		const { handleSubmit, pristine, submitting } = this.props;
+
 		if (this.props.user.loggedIn) {
 				return this.state.new ? 
 					<h2> Created account and logged in! </h2> : 
@@ -63,7 +69,10 @@ class LoginUser extends Component {
 								: null
 							}
 						<div>
-							<button type='submit' disabled={pristine || submitting}> Submit </button>
+							{ this.props.loader.isLoading ? 
+								<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
+								: <button type='submit' disabled={pristine || submitting}> Submit </button>
+							}
 						</div>			
 					</form>
 				</div>
@@ -104,10 +113,11 @@ const validate = (values) => {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		loader: state.loader
 	}
 }
 
 LoginUser =  reduxForm({ form: 'LoginUserForm', validate })(LoginUser);
 
-export default connect(mapStateToProps, { loginUser })(LoginUser);
+export default connect(mapStateToProps, { loginRequest })(LoginUser);

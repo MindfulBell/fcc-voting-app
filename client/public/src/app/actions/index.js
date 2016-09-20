@@ -45,27 +45,63 @@ export function refreshPoll(pollId, votedFor = null, newOption = null) {
 
 
 export const LOGIN_USER = 'LOGIN_USER';
-export function loginUser(user = {}, newUser = false) {
-	let payload;
-	if (newUser) {
-
-		return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
-			.then(() => {
-				payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user);
-				return {
-					type: LOGIN_USER,
-					payload
-				}
-		}).catch((e) => { console.log(e) });
-
+function loginUser(user) {
+	return {
+		type: LOGIN_USER,
+		payload: user
 	}
+}
 
-	else {
-		payload = makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-			.catch((e) => { console.log(e)});
-		return {
-			type: LOGIN_USER,
-			payload
+export function loginRequest(user = {}, newUser = false) {
+	let payload;
+	return (dispatch) => {
+		dispatch(showLoader());
+
+		if (newUser) {
+			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
+				.then(() => {
+					makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+						.then((response) => { 
+							dispatch(loginUser(response));
+							dispatch(hideLoader()); 
+						});
+			}).catch((e) => { 
+				// ADD LOGIN_ERROR ACTION??
+				console.log(e) 
+			});
+		}
+
+		else {
+			return makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+				.then((response) => { 
+					dispatch(loginUser(response));
+					dispatch(hideLoader()); 
+				})
+				.catch((e) => { 
+				// ADD LOGIN_ERROR ACTION??
+				console.log(e) 
+			});
 		}
 	}
 }
+
+
+
+// LOADER ACTIONS
+
+export const SHOW_LOADER = 'SHOW_LOADER';
+function showLoader() {
+	return {
+		type: SHOW_LOADER
+	}
+}
+
+export const HIDE_LOADER = 'HIDE_LOADER';
+function hideLoader() {
+	return {
+		type: HIDE_LOADER
+	}
+}
+
+
+
