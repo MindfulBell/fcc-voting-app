@@ -7,17 +7,6 @@ import { browserHistory } from 'react-router';
 class LoginUser extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			new: false
-		}
-	}
-
-	componentWillMount() {
-		if (window.location.href.includes('new')) {
-			// making a new user
-			this.setState({ new: true })
-		}
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -27,15 +16,14 @@ class LoginUser extends Component {
 	}
 
 	onFormSubmit(params) {
-		// if a new user, gotta create it first, otherwise, just login
-		this.props.loginRequest(params, this.state.new);
+		this.props.loginRequest(params, this.props.newUser);
 	}
 
 	render() {
 		const { handleSubmit, pristine, submitting } = this.props;
 
 		if (this.props.user.loggedIn) {
-				return this.state.new ? 
+				return this.props.newUser ? 
 					<h2> Created account and logged in! </h2> : 
 					<h2> Logged in! </h2>;
 		}
@@ -43,26 +31,26 @@ class LoginUser extends Component {
 			return (
 				<div className='login-user'>
 					<form onSubmit={handleSubmit(this.onFormSubmit.bind(this))}>
-						<h2>{this.state.new ? 'Create an Account' : 'Login'}</h2>
+						<h2>{this.props.newUser ? 'Create an Account' : 'Login'}</h2>
 						<div>
 							<Field name='username' component={renderField} type='text' label='Username'/>
 							{ 
-								this.state.new ? <span> Min 6 characters... </span> : null		
+								this.props.newUser ? <span> Min 6 characters... </span> : null		
 							}
 						</div>
 						<div>
 							<Field name='password' component={renderField} type='password' label='Password'/>
-							{ this.state.new ? 
+							{ this.props.newUser ? 
 								<span> 1 uppercase letter, 1 lowercase letter, 1 number, min 6 characters please... </span> 
 								: null	
 							}
 						</div>
-							{ this.props.user.auth.success === false && !this.state.new ? 
+							{ this.props.user.auth.success === false && !this.props.newUser ? 
 									<span> Could not login with provided credentials </span> 
 									: null
 							}
 							{
-								this.state.new ? 
+								this.props.newUser ? 
 								<div>
 									<Field name='reEnter' component={renderField} type='password' label='Re-enter password'/>
 								</div> 

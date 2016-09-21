@@ -41,6 +41,13 @@ export function refreshPoll(pollId, votedFor = null, newOption = null) {
 	}
 }
 
+export const EMPTY_POLL = 'EMPTY_POLL';
+export function emptyPoll() {
+	return {
+		type: EMPTY_POLL
+	}
+}
+
 // USER ACTIONS
 
 
@@ -49,6 +56,14 @@ function loginUser(user) {
 	return {
 		type: LOGIN_USER,
 		payload: user
+	}
+}
+
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+function userLoginError(error) {
+	return {
+		type: LOGIN_ERROR,
+		payload: error
 	}
 }
 
@@ -66,8 +81,7 @@ export function loginRequest(user = {}, newUser = false) {
 							dispatch(hideLoader()); 
 						});
 			}).catch((e) => { 
-				// ADD LOGIN_ERROR ACTION??
-				console.log(e) 
+					dispatch(userLoginError(e));
 			});
 		}
 
@@ -78,8 +92,7 @@ export function loginRequest(user = {}, newUser = false) {
 					dispatch(hideLoader()); 
 				})
 				.catch((e) => { 
-				// ADD LOGIN_ERROR ACTION??
-				console.log(e) 
+					dispatch(userLoginError(e));
 			});
 		}
 	}

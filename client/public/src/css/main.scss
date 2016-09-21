@@ -1,10 +1,70 @@
-h1 {
-	color: blue;
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Poppins");
+
+$background: #D1FAFF;
+$lightblue: #9BD1E5;
+$medblue: #6A8EAE;
+$lightgreen: #57A773;
+$medgreen: #157145;
+$font: 'Poppins', sans-serif; 
+
+body {
+	box-sizing: border-box;
+	font-family: $font;
+}
+
+a {
+	list-style-type: none;
+	text-decoration: none;
+}
+
+@mixin prefix($property, $value, $prefixes: ()) {
+	@each $prefix in $prefixes {
+		#{'-' + $prefix + '-' + $property}: $value;
+	}
+}
+
+// NAV
+
+.navbar {
+	background-color: $medblue;
+	position: absolute;
+	width: 100%;
+	height: 50px;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+
+
+
+	.link {
+		@include prefix(transition, (color .2s), webkit ms moz o);
+		float: right;
+		display: inline-block;
+		color: $lightblue;
+		padding: 16px 3px 0px 10px;
+		text-align: center;
+		text-shadow: 0px 0px 4px black;
+		&:hover {
+			color: $background;
+		}
+	}
+
+	.link-icon {
+		padding-top: 10px;
+	}
+
+	#home {
+		float: left;
+	}
+}
+
+.home-main {
+	margin-top: 50px;
 }
 
 .loading {
 	animation: spin 1s linear infinite;
-
 }
 
 @keyframes spin {

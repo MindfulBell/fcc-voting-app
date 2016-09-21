@@ -7,6 +7,7 @@ import routes from './routes';
 import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
+require("!style!css!sass!../css/main.scss");
 
 const storeWithMiddleware = applyMiddleware(promise, thunk)(createStore);
 

@@ -22,6 +22,7 @@ class HomeIndex extends Component {
 	}
 
 	render() {
+
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
 				<PollLink
@@ -32,23 +33,10 @@ class HomeIndex extends Component {
 		})
 
 		return (
-			<div>
-				<div className='navbar'>
-					<ul>
-						<Link to='/user/login'>
-							<li> Login </li>
-						</Link>
-						<Link to='/user/new'>
-							<li> Register </li>
-						</Link>
-						<li> My Polls </li>
-					</ul>
-				</div>
-				<div>
+			<div className='home-main'>
 				<h1> Home Page </h1>
-					<div className='poll-list'>
-						{polls}
-					</div>
+				<div className='poll-list'>
+					{polls}
 				</div>
 			</div>
 		)
@@ -60,14 +48,14 @@ class HomeIndex extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pollsList: state.polls.pollsList
+		pollsList: state.polls.pollsList,
+		user: state.user
 	}
 }
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-			getPolls: () => {dispatch(getPolls())},
-			setActivePoll: (id) => {dispatch(setActivePoll(id))}
+			getPolls: () => {dispatch(getPolls())}
 		}
 	}
 

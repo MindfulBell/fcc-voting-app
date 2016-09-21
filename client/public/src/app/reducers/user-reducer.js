@@ -1,4 +1,4 @@
-import { LOGIN_USER } from '../actions/index';
+import { LOGIN_USER, LOGIN_ERROR } from '../actions/index';
 
 const INITIAL_USER_STATE = {
 	username: '',
@@ -18,6 +18,8 @@ export default function (state = INITIAL_USER_STATE, action) {
 			else {
 				return Object.assign({}, state, { auth: { success: false } });
 			}
+		case LOGIN_ERROR:
+			return Object.assign({}, state, { auth: { success: false, error: action.payload }})
 		default: 
 			return state;
 	}

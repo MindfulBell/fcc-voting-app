@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Poll from '../components/poll';
-import { refreshPoll } from '../actions/index';
+import { refreshPoll, emptyPoll } from '../actions/index';
 
 class PollContainer extends Component {
 	constructor(props) {
@@ -18,11 +18,10 @@ class PollContainer extends Component {
 
 	componentWillUnmount() {
 		// remove active poll to prevent flashing of options on poll switch
-		this.props.refreshPoll()
+		this.props.emptyPoll()
 	}
 
 	processVote(pollId, votedFor) {
-		console.log(votedFor);
 		this.props.refreshPoll(pollId, votedFor);
 	}
 
@@ -49,7 +48,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-			refreshPoll: (id, votedFor, newOption) => {dispatch(refreshPoll(id, votedFor, newOption))}
+			refreshPoll: (id, votedFor, newOption) => {dispatch(refreshPoll(id, votedFor, newOption))},
+			emptyPoll: () => { dispatch(emptyPoll()) }
 		}
 	}
 

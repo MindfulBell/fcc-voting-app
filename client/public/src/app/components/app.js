@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 class App extends React.Component {
 	constructor(props) {
@@ -6,13 +8,45 @@ class App extends React.Component {
 	}
 
 	render() {
+		const loggedInNav = 
+			<div>
+				<li className='link'> Hi, {this.props.user.username} </li>
+				<Link to='/user/account'>
+					<li className='link'> My Polls </li>
+				</Link>
+				<span className='link'>	Logout </span>
+			</div>
+
 		return (
 			<div>
-				<h1> Welcome to my awesome Voting App! </h1>
-				{this.props.children}
+				<div className='navbar-container'>
+					<ul className='navbar'>
+						<Link to='/'>
+							<li className='link link-icon' id='home'> <i className="fa fa-home fa-2x" aria-hidden="true"> </i> </li>
+						</Link>
+					{ this.props.user.loggedIn ? 
+								loggedInNav :
+						<div> 
+							<Link to='/user/login'>
+								<li className='link'> Login </li>
+							</Link>
+							<Link to='/user/new'>
+								<li className='link'> Register </li>
+							</Link>
+						</div>
+						}
+					</ul>
+				</div>
+				<div>
+					{this.props.children}
+				</div>
 			</div>
 		)
 	}
 }
-
-export default App; 
+const mapStateToProps = (state) => {
+	return {
+		user: state.user
+	}
+}
+export default connect(mapStateToProps, null)(App); 

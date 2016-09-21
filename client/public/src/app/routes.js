@@ -10,7 +10,7 @@ export default(
 	<Route path='/' component={App}> 
 		<IndexRoute component={HomeIndex} />
 		<Route path='/poll/:pollId' component={PollContainer} />
-		<Route path='/user/new' component={UserContainer} />
+		<Route path='/user/new' newUser={true} component={UserContainer} />
 		<Route path='/user/login' component={UserContainer} />
 	</Route>
 )

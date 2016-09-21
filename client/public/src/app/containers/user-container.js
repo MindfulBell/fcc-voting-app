@@ -6,9 +6,10 @@ class UserContainer extends Component {
         super(props);
     }
     render() {
+        console.log(this.props);
         return (
         	<div>
-        		<UserLogin />
+        		<UserLogin newUser={this.props.route.newUser} />
         	</div>
        )
     }
