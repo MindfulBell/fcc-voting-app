@@ -17,7 +17,6 @@ class HomeIndex extends Component {
 	}	
 
 	componentWillMount() {
-		// get all the polls for the main page
 		this.props.getPolls();
 	}
 
@@ -26,6 +25,7 @@ class HomeIndex extends Component {
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
 				<PollLink
+				className='poll-link'
 				title={poll.title} 
 				id={poll.id} 
 				key={ind} />
@@ -34,7 +34,8 @@ class HomeIndex extends Component {
 
 		return (
 			<div className='home-main'>
-				<h1> Home Page </h1>
+				<h1 className='title'> Counts </h1>
+				<h3 className='subtitle'> <i>Vote for what you believe in...</i> </h3>
 				<div className='poll-list'>
 					{polls}
 				</div>

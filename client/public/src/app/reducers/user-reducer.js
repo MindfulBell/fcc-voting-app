@@ -19,6 +19,7 @@ export default function (state = INITIAL_USER_STATE, action) {
 				return Object.assign({}, state, { auth: { success: false } });
 			}
 		case LOGIN_ERROR:
+		console.log(action.payload);
 			return Object.assign({}, state, { auth: { success: false, error: action.payload }})
 		default: 
 			return state;

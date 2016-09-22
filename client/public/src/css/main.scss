@@ -57,10 +57,26 @@ a {
 	#home {
 		float: left;
 	}
+
+	.greeting {
+		cursor: default;
+		&:hover {
+			color: $lightblue;
+		}
+	}
 }
 
 .home-main {
 	margin-top: 50px;
+	text-align: center;
+	.title {
+		margin-bottom: -10px;
+		font-size: 4em;
+	}
+	.subtitle {
+		margin: 0 0 25px 0;
+	}
+	
 }
 
 .loading {

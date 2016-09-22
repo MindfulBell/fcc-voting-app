@@ -8,6 +8,7 @@ class UserController {
 					return res.json({success: false, message: "A user with that name already exists"});
 				}
 				else {
+					console.log(err);
 					return res.status(500).send(err);
 				}
 			}

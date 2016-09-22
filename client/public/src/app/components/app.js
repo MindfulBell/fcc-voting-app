@@ -7,14 +7,15 @@ class App extends React.Component {
 		super(props);
 	}
 
+// CHANGE LINK TO ACCOUNT TO HAVE USERID AS PARAM
 	render() {
 		const loggedInNav = 
 			<div>
-				<li className='link'> Hi, {this.props.user.username} </li>
-				<Link to='/user/account'>
+				<Link to={`/user/${this.props.user.id}`}>
 					<li className='link'> My Polls </li>
 				</Link>
-				<span className='link'>	Logout </span>
+				<li className='link'>	Logout </li>
+				<li className='link greeting'> Hi, {this.props.user.username} </li>
 			</div>
 
 		return (
@@ -44,6 +45,7 @@ class App extends React.Component {
 		)
 	}
 }
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user

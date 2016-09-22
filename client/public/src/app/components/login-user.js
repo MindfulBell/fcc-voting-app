@@ -89,8 +89,16 @@ const validate = (values) => {
 		errors.username = 'Enter a username';
 	}
 
+	if (values.username && values.username.length < 6) {
+		errors.username = 'Please follow username guidelines';
+	}
+
 	if (!values.password) {
 		errors.password = 'Enter a password';
+	}
+
+	if (values.password && (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/g.test(values.password) || values.password.length < 6)) {
+		errors.password = 'Please follow password guidelines';
 	}
 
 	if (values.password !== values.reEnter) {

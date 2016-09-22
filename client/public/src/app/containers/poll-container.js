@@ -40,7 +40,6 @@ class PollContainer extends Component {
 // REDUX 
 
 const mapStateToProps = (state) => {
-
 	return {
 		activePoll: state.polls.activePoll
 	}
@@ -52,6 +51,5 @@ const mapDispatchToProps = (dispatch) => {
 			emptyPoll: () => { dispatch(emptyPoll()) }
 		}
 	}
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollContainer);
