@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getPolls, setActivePoll } from '../actions/index';
+import { getPolls, setActivePoll, clearPolls } from '../actions/index';
 import { Link } from 'react-router';
 
 import PollLink from './poll-link';
@@ -20,6 +20,9 @@ class HomeIndex extends Component {
 		this.props.getPolls();
 	}
 
+	componentWillUnmount() {
+		this.props.clearPolls();
+	}
 	render() {
 
 		const polls = this.props.pollsList.map((poll, ind) => {
@@ -56,7 +59,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-			getPolls: () => {dispatch(getPolls())}
+			getPolls: () => {dispatch(getPolls())},
+			clearPolls: () => {dispatch(clearPolls())}
 		}
 	}
 

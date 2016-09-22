@@ -17,7 +17,7 @@ export function getPolls() {
 
 export const GET_USER_POLLS = 'GET_USER_POLLS';
 export function getUserPolls(userId, token) {
-	const payload = makeAxiosRequest('get', `${ROOT_API}/polls/${userId}`, { token });
+	const payload = makeAxiosRequest('get', `${ROOT_API}/polls/${userId}`, {"token": token});
 	return {
 		type: GET_USER_POLLS,
 		payload
@@ -50,6 +50,13 @@ export const EMPTY_POLL = 'EMPTY_POLL';
 export function emptyPoll() {
 	return {
 		type: EMPTY_POLL
+	}
+}
+
+export const CLEAR_POLLS = 'CLEAR_POLLS';
+export function clearPolls() {
+	return {
+		type: CLEAR_POLLS
 	}
 }
 

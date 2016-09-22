@@ -10,7 +10,7 @@ class App extends React.Component {
 // CHANGE LINK TO ACCOUNT TO HAVE USERID AS PARAM
 	render() {
 		const loggedInNav = 
-			<div>
+			<div className='right-links'>
 				<Link to={`/user/${this.props.user.id}`}>
 					<li className='link'> My Polls </li>
 				</Link>
@@ -27,7 +27,7 @@ class App extends React.Component {
 						</Link>
 					{ this.props.user.loggedIn ? 
 								loggedInNav :
-						<div> 
+						<div className='right-links'> 
 							<Link to='/user/login'>
 								<li className='link'> Login </li>
 							</Link>

@@ -1,9 +1,13 @@
 import axios from 'axios';
 
 export default function makeAxiosRequest(type, url, body = {}) {
+	console.log(body);
 	switch (type) {
 		case 'get': 
-			return axios.get(url);
+			if (body.token) {
+				return axios.get(url, { headers: {'X-Access-Token': body.token }})
+			}
+			return axios.get(url, { params: body } );
 		case 'patch':
 			return axios.patch(url, body);
 		case 'delete':

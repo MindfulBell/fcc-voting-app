@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getUserPolls } from '../actions/index';
+import { getUserPolls, clearPolls } from '../actions/index';
 import PollLink from '../components/poll-link';
 
 class ProfileContainer extends Component {
@@ -10,9 +10,13 @@ class ProfileContainer extends Component {
 	}
 
 	componentWillMount() {
-		console.log(this.props.token);
 		this.props.getUserPolls(this.props.params.userId, this.props.token)
 	}
+
+	componentWillUnmount() {
+		this.props.clearPolls();
+	}
+
 	render() {
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
@@ -24,8 +28,12 @@ class ProfileContainer extends Component {
 			)
 		});
 		return (
-			<div> 
-				{polls}
+			<div className='user-main'>
+				<h1 className='title'> Your polls </h1>
+				<h3 className='subtitle'> <i>What will you ask today?</i> </h3>
+				<div className='poll-list'> 
+					{polls}
+				</div>
 			</div>
 		)
 	}
@@ -42,7 +50,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-		getUserPolls: (userId, token) => {dispatch(getUserPolls(userId, token))}
+		getUserPolls: (userId, token) => {dispatch(getUserPolls(userId, token))},
+		clearPolls: () => {dispatch(clearPolls())}
 	}
 }
 
