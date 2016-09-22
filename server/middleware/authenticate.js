@@ -4,7 +4,6 @@ let User = require('../models/User'),
 
 let authenticate = {
 	encode: function(req, res){
-		console.log(req.body);
 		User.findOne({username: req.body.username}).select('username password').exec((err, user) => {
 			if (err) {
 				throw err;
@@ -58,12 +57,14 @@ let authenticate = {
 					})
 				}
 				else {
+					console.log('verified');
 					req.decoded = decoded;
-					next();
+					return next();
 				}
 			})			
 		}
 		else {
+			console.log('no token');
 			return res.status(403).send({
 				success: false,
 				message: 'No token provided.'

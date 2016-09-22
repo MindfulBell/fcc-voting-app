@@ -11,7 +11,9 @@ class PollController {
 
 	getPolls(res, id = {}) { 
 		Poll.find(id, (err, polls) => {
-			if (err) return res.status(500).send(err);
+			if (err) {
+				return res.status(500).send(err);
+			}
 			return res.status(200).json(polls);
 		})
 	}

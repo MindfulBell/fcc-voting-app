@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import getUserPolls from '../actions/index';
+import { getUserPolls } from '../actions/index';
 import PollLink from '../components/poll-link';
 
 class ProfileContainer extends Component {
@@ -10,6 +10,7 @@ class ProfileContainer extends Component {
 	}
 
 	componentWillMount() {
+		console.log(this.props.token);
 		this.props.getUserPolls(this.props.params.userId, this.props.token)
 	}
 	render() {
@@ -34,7 +35,7 @@ class ProfileContainer extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		token: state.user.token,
+		token: state.user.auth.token,
 		pollsList: state.polls.pollsList
 	}
 }
