@@ -21,6 +21,7 @@ class App extends React.Component {
 
 	logoutUser() {
 		this.props.logoutUser();
+		localStorage.removeItem('token');
 		browserHistory.push('/');
 	}
 
