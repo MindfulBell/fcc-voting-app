@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
+
+import { loginFromStorage, logoutUser } from '../actions/index';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.logoutUser = this.logoutUser.bind(this);
 	}
 
-// CHANGE LINK TO ACCOUNT TO HAVE USERID AS PARAM
+	componentWillMount() {  
+		if (localStorage.getItem('token')) {
+			const token = localStorage.getItem('token');
+			console.log(token);
+			this.props.loginFromStorage(token);
+		}
+	}
+
+	logoutUser() {
+		this.props.logoutUser();
+		browserHistory.push('/');
+	}
+
 	render() {
 		const loggedInNav = 
 			<div className='right-links'>
 				<Link to={`/user/${this.props.user.id}`}>
 					<li className='link'> My Polls </li>
 				</Link>
-				<li className='link'>	Logout </li>
+				<li className='link' onClick={this.logoutUser}>	Logout </li>
 				<li className='link greeting'> Hi, {this.props.user.username} </li>
 			</div>
 
@@ -51,4 +67,11 @@ const mapStateToProps = (state) => {
 		user: state.user
 	}
 }
-export default connect(mapStateToProps, null)(App); 
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loginFromStorage: (token) => { dispatch(loginFromStorage(token)) },
+		logoutUser: () => { dispatch(logoutUser()) }
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App); 

@@ -62,6 +62,27 @@ export function clearPolls() {
 
 // USER ACTIONS
 
+export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
+export function loginFromStorage(token) {
+	return (dispatch) => {
+		makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
+			.then((response) => {
+				const user = {
+					data: {
+						auth: { token },
+						username: response.data.username,
+						id: response.data.id
+					}
+				}
+				console.log(user);
+				dispatch(loginUser(user))
+		})
+			.catch((e) => {
+				dispatch(userLoginError(e))
+		})
+	}
+}
+
 
 export const LOGIN_USER = 'LOGIN_USER';
 function loginUser(user) {
@@ -78,6 +99,14 @@ function userLoginError(error) {
 		payload: error
 	}
 }
+
+export const LOGOUT_USER = 'LOGOUT_USER';
+export function logoutUser() {
+	return {
+		type: LOGOUT_USER
+	}
+}
+
 
 export function loginRequest(user = {}, newUser = false) {
 	let payload;

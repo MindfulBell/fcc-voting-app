@@ -1,4 +1,5 @@
 let express = require('express'),
+		authenticate = require('../middleware/authenticate'),
 		userController = require('../controllers/user-controller'),
 		userRouter = express.Router();
 
@@ -8,6 +9,10 @@ userRouter.post('/users/register', (req, res) => {
 		const newUser = Object.assign({}, req.body);
 		userController.registerUser(newUser, res)
 	});
+
+userRouter.post('/users/authenticate', (req, res) => {
+	authenticate.verify(req, res, false, true);
+})
 
 
 	// need Auth + checks against the current logged in user so they can update/delete

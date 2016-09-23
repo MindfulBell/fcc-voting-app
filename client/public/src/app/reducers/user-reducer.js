@@ -1,11 +1,10 @@
-import { LOGIN_USER, LOGIN_ERROR } from '../actions/index';
+import { LOGIN_USER, LOGIN_ERROR, LOGOUT_USER } from '../actions/index';
 
 const INITIAL_USER_STATE = {
 	username: '',
 	token: '',
 	id: '',
 	loggedIn: false,
-	validate: {},
 	auth: {}
 }
 
@@ -19,8 +18,10 @@ export default function (state = INITIAL_USER_STATE, action) {
 				return Object.assign({}, state, { auth: { success: false } });
 			}
 		case LOGIN_ERROR:
-		console.log(action.payload);
-			return Object.assign({}, state, { auth: { success: false, error: action.payload }})
+			return Object.assign({}, state, { auth: { success: false, error: action.payload }});
+
+		case LOGOUT_USER:
+			return Object.assign({}, state, INITIAL_USER_STATE);
 		default: 
 			return state;
 	}

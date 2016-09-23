@@ -15,6 +15,10 @@ class LoginUser extends Component {
 		}
 	}
 
+	componentWillUnmount(){
+		localStorage.setItem('token', this.props.token);
+	}
+
 	onFormSubmit(params) {
 		this.props.loginRequest(params, this.props.newUser);
 	}
@@ -110,7 +114,8 @@ const validate = (values) => {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
-		loader: state.loader
+		loader: state.loader,
+		token: state.user.auth.token
 	}
 }
 

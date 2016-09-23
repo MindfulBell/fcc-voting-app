@@ -4,7 +4,7 @@ let User = require('../models/User'),
 
 let authenticate = {
 	encode: function(req, res){
-		User.findOne({username: req.body.username}).select('username password').exec((err, user) => {
+		User.findOne({username: req.body.username}).select('username password id').exec((err, user) => {
 			if (err) {
 				throw err;
 			}
@@ -28,7 +28,8 @@ let authenticate = {
 				}
 				else {
 					let token = jwt.sign({
-						username: user.username
+						username: user.username,
+						id: user._id
 					}, secret, {
 						expiresIn: '12h'
 					});
@@ -46,7 +47,7 @@ let authenticate = {
 		})
 	},
 
-	verify: function(req, res, next) {
+	verify: function(req, res, next, localStorageCheck = false) {
 		let token = req.body.token || req.query.token || req.headers['x-access-token'];
 		if (token) { 
 			jwt.verify(token, secret, (err, decoded) => {
@@ -58,6 +59,12 @@ let authenticate = {
 				}
 				else {
 					req.decoded = decoded;
+					if (localStorageCheck) {
+						return res.status(200).send({
+							username: decoded.username,
+							id: decoded.id
+						})
+					}
 					return next();
 				}
 			})			

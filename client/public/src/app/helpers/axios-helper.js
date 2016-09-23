@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default function makeAxiosRequest(type, url, body = {}) {
-	console.log(body);
 	switch (type) {
 		case 'get': 
 			if (body.token) {
