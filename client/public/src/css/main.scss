@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Pacifico|Poppins");
 
-$background: #D1FAFF;
+$background: #dcfdfb;
 $lightblue: #9BD1E5;
 $medblue: #6A8EAE;
 $lightgreen: #57A773;
@@ -10,6 +10,8 @@ $font: 'Poppins', sans-serif;
 body {
 	box-sizing: border-box;
 	font-family: $font;
+	background-color: $background;
+	margin: 0;
 }
 
 a {
@@ -27,13 +29,15 @@ a {
 
 .navbar {
 	background-color: $medblue;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 50px;
 	top: 0;
 	left: 0;
 	margin: 0;
 	padding: 0;
+	box-shadow: 0px 2px 12px 0px black;
+	z-index: 3;
 
 
 .right-links {
@@ -43,12 +47,12 @@ a {
 		@include prefix(transition, (color .2s), webkit ms moz o);
 		float: right;
 		display: inline-block;
-		color: $lightblue;
+		color: #fff;
 		padding: 16px 6px 6px 10px;
 		text-align: center;
 		text-shadow: 0px 0px 4px black;
 		&:hover {
-			color: $background;
+			color: $lightblue;
 		}
 		cursor: pointer;
 	}
@@ -63,29 +67,120 @@ a {
 	.greeting {
 		cursor: default;
 		&:hover {
-			color: $lightblue;
+			color: #fff;
 		}
 	}
 }
 
-.home-main, .user-main {
+// HEADERS
+
+.home-main, .user-main, .chart-holder {
 	margin-top: 50px;
 	text-align: center;
 	.title {
-		margin-bottom: -10px;
+		margin: 75px 0 -25px 0;
 		font-size: 4em;
+		color: #fff;
+		text-shadow: 0px 0px 4px black;
 	}
 	.subtitle {
-		margin: 0 0 25px 0;
+		margin: 0 0 65px 0;
+		color: #fff;
+		text-shadow: 0px 0px 2px black;
 	}
 }
 
+.user-main .title {
+	margin-bottom: -15px;
+}
+
+// POLL LINKS
+
 .poll-list {
+	width: 80%;
+	margin: 0 auto;
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	a {
+		height: 150px;
+	}
 	.poll-link {
 		height: 150px;
-		background-color: #0AF6F3;
-		box-shadow: 0px 0px 6px black;
+		width: 250px;
+		box-shadow: 0px 0px 1px black;
+		color: white;
+		position: relative;
+		top: -25px;
+		transition: transform .3s, box-shadow .3s;
+		&:hover {
+			transform: scale(1.2);
+			z-index: 1;
+			box-shadow: 0px 0px 6px black;
+		}
+
+		&:hover h3 {
+				white-space: normal;
+				overflow: auto;
+
+			}
+
+		h3 {
+			padding: 25px 3px 3px 0px;
+			text-shadow: 0px 2px 3px black;
+			margin: 0 auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 250px;
+			white-space: nowrap;
+		}
+	}
+}
+
+@keyframes appear {
+	0% { opacity: 0; transform: rotate(-15deg); }
+	25% { transform: rotate(0deg); }
+	100% { opacity: 1; }
+}
+
+
+// CHART
+
+.chart-holder {
+	margin: 100px auto;
+	max-width: 600px;
+	.title {
+		font-size: 2.5em;
+		margin-bottom: 10px;
+		line-height: 47px;
+	}
+	.choices-container {
+		margin-top: 25px;
+		display: flex;
+		justify-content: center;
+
+		.choice {
+			margin: 0 10px 0 10px;
+	    background: none;
+	    border: 2px solid $medgreen;
+	    height: 35px;
+	    color: $medgreen;
+	    border-radius: 8px;
+	    font-family: $font;
+	    font-weight: bold;
+	    cursor: pointer;
+	    padding: 0 12px;
+	    transition: color .3s, background-color .3s, transform .3s;
+	    &:focus {
+	    	outline: 0;
+	    }
+	    &:hover {
+	    	background-color: $medgreen;
+	    	color: $background;
+	    	transform: rotate(10deg);
+	    }
+
+		}
 	}
 }
 
@@ -96,6 +191,7 @@ a {
 .loading {
 	animation: spin 1s linear infinite;
 }
+
 
 @keyframes spin {
 	100% { transform: rotate(360deg); }

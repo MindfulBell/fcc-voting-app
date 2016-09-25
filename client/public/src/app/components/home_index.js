@@ -28,10 +28,11 @@ class HomeIndex extends Component {
 		const polls = this.props.pollsList.map((poll, ind) => {
 			return (
 				<PollLink
-				className='poll-link'
+				index={ind}
 				title={poll.title} 
 				id={poll.id} 
-				key={ind} />
+				key={ind} 
+				secs={Math.floor((Math.random()*3) + 1)}/>
 			)
 		})
 

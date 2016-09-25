@@ -23,8 +23,10 @@ class ProfileContainer extends Component {
 				<PollLink
 				className='poll-link'
 				title={poll.title} 
+				index={ind}
 				id={poll.id} 
-				key={ind} />
+				key={ind} 
+				initial={this.state.initial}/>
 			)
 		});
 		return (
