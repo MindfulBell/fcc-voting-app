@@ -60,12 +60,43 @@ export function clearPolls() {
 	}
 }
 
+export function createNewPoll(poll){
+	console.log('yo"')
+	// request to make a poll and add it to database 
+	return (dispatch) => {
+		dispatch(showLoader());
+		makeAxiosRequest('post', `${ROOT_API}/polls`, poll)
+			.then((response) => {
+				console.log(response);
+				dispatch(refreshPoll(response.data._id));
+				dispatch(hideLoader());
+			})
+			.catch((e) => {
+
+				// Error here...
+				// dispatch(createPollError(e))
+			})
+	}
+
+	// success: dispatch refreshPoll so it displays
+
+	// fail: send some error message to the form?
+}
+
+export const FETCH_POLLS = 'FETCH_POLLS';
+export function fetchPoll(fetching) {
+	return {
+		type: FETCH_POLLS,
+		fetching 
+	}
+}
+
 // USER ACTIONS
 
 export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
 export function loginFromStorage(token) {
 	return (dispatch) => {
-		makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
+		return makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
 			.then((response) => {
 				const user = {
 					data: {
@@ -74,7 +105,6 @@ export function loginFromStorage(token) {
 						id: response.data.id
 					}
 				}
-				console.log(user);
 				dispatch(loginUser(user))
 		})
 			.catch((e) => {

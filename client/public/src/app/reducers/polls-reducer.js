@@ -1,13 +1,15 @@
-import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, FETCH_POLLS } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
-	activePoll: {}
+	activePoll: {},
+	fetching: false
 };
 
 export default function (state = INITIAL_POLLS_STATE, action) {
 	switch (action.type) {
-
+		case FETCH_POLLS: 
+			return Object.assign({}, state, { fetching: action.fetching });
 		case GET_POLLS: 
 		case GET_USER_POLLS:
 			let pollsList = action.payload.data.map((poll) => {

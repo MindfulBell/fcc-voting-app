@@ -41,7 +41,7 @@ export default (props) => {
 		}
 
 	return (
-		<div className='chart-holder'>
+		<div className='main'>
 			<h2 className='title'>{props.title}</h2>
 			<Pie data={chartData} width={400} height={400} options={{
 				responsive: true

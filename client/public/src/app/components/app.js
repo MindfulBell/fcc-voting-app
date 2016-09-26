@@ -14,7 +14,6 @@ class App extends React.Component {
 	componentWillMount() {  
 		if (localStorage.getItem('token')) {
 			const token = localStorage.getItem('token');
-			console.log(token);
 			this.props.loginFromStorage(token);
 		}
 	}
@@ -30,6 +29,9 @@ class App extends React.Component {
 			<div className='right-links'>
 				<Link to={`/user/${this.props.user.id}`}>
 					<li className='link'> My Polls </li>
+				</Link>
+				<Link to={`/polls/new`}>
+					<li className='link'> Create </li>
 				</Link>
 				<li className='link' onClick={this.logoutUser}>	Logout </li>
 				<li className='link greeting'> Hi, {this.props.user.username} </li>

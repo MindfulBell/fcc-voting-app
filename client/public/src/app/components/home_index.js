@@ -37,7 +37,7 @@ class HomeIndex extends Component {
 		})
 
 		return (
-			<div className='home-main'>
+			<div className='main'>
 				<h1 className='title'> Counts </h1>
 				<h3 className='subtitle'> <i>Vote for what you believe in...</i> </h3>
 				<div className='poll-list'>

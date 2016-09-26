@@ -2,7 +2,6 @@ import { LOGIN_USER, LOGIN_ERROR, LOGOUT_USER } from '../actions/index';
 
 const INITIAL_USER_STATE = {
 	username: '',
-	token: '',
 	id: '',
 	loggedIn: false,
 	auth: {}

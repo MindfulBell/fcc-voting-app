@@ -25,12 +25,12 @@ class ProfileContainer extends Component {
 				title={poll.title} 
 				index={ind}
 				id={poll.id} 
-				key={ind} 
-				initial={this.state.initial}/>
+				key={ind}
+				/>
 			)
 		});
 		return (
-			<div className='user-main'>
+			<div className='main'>
 				<h1 className='title'> Your polls </h1>
 				<h3 className='subtitle'> <i>What will you ask today?</i> </h3>
 				<div className='poll-list'> 
