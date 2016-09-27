@@ -1,15 +1,8 @@
-// Home page
-// Nav
-// Title
-// List of Polls (flexbox?)
-// Footer?
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getPolls, setActivePoll, clearPolls } from '../actions/index';
-import { Link } from 'react-router';
+import PollList from './poll-list';
 
-import PollLink from './poll-link';
 
 class HomeIndex extends Component {
 	constructor(props) {
@@ -25,24 +18,11 @@ class HomeIndex extends Component {
 	}
 	render() {
 
-		const polls = this.props.pollsList.map((poll, ind) => {
-			return (
-				<PollLink
-				index={ind}
-				title={poll.title} 
-				id={poll.id} 
-				key={ind} 
-				secs={Math.floor((Math.random()*3) + 1)}/>
-			)
-		})
-
 		return (
 			<div className='main'>
 				<h1 className='title'> Counts </h1>
 				<h3 className='subtitle'> <i>Vote for what you believe in...</i> </h3>
-				<div className='poll-list'>
-					{polls}
-				</div>
+				<PollList pollsList={this.props.pollsList} />
 			</div>
 		)
 	}

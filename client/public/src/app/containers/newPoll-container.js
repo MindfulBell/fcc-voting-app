@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { browserHistory } from 'react-router';
 
-import { createNewPoll } from '../actions/index';
+import { createNewPoll, createdPoll } from '../actions/index';
 
 class NewPollForm extends Component {
 	constructor(props) {
@@ -14,17 +15,20 @@ class NewPollForm extends Component {
 
 		this.addOptionField = this.addOptionField.bind(this);
 		this.submitPoll = this.submitPoll.bind(this);
+	}
 
-		//   "poll": {
-    //    "title": "What is the best COLOR OF STUFF of things in the world!!!!?",
-    //   "createdBy": "57e43a4ba4e1f4c016d76d1b",
-    //   "options": [{"optionName": "RED", "votes": 0}, {"optionName": "salamander", "votes": 0}]
-    // },
-    // "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRCZWxsNDU2IiwiaWF0IjoxNDc0NTc0OTM5LCJleHAiOjE0NzQ2MTgxMzl9.g7MfxlliFxYth3VlqEV70ogHKpB7v09J39YjxTjgqDM"
+	componentWillMount() {
+		this.props.createdPoll(false);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+		if (nextProps.polls.createdPoll) {
+			browserHistory.push(`/poll/${nextProps.polls.activePoll._id}`)
+		}
 	}
 
 	addOptionField() {
-		console.log('yo');
 		this.setState({
 			options: this.state.options + 1
 		})
@@ -82,7 +86,8 @@ class NewPollForm extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
-		loader: state.loader
+		loader: state.loader,
+		polls: state.polls
 	}
 }
 
@@ -90,4 +95,4 @@ NewPollForm = reduxForm({
 	form: 'newPoll'
 })(NewPollForm);
 
-export default connect(mapStateToProps, { createNewPoll })(NewPollForm)
+export default connect(mapStateToProps, { createNewPoll, createdPoll })(NewPollForm)

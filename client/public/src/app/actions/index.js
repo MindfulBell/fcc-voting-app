@@ -70,6 +70,7 @@ export function createNewPoll(poll){
 				console.log(response);
 				dispatch(refreshPoll(response.data._id));
 				dispatch(hideLoader());
+				dispatch(createdPoll(true));
 			})
 			.catch((e) => {
 
@@ -83,11 +84,11 @@ export function createNewPoll(poll){
 	// fail: send some error message to the form?
 }
 
-export const FETCH_POLLS = 'FETCH_POLLS';
-export function fetchPoll(fetching) {
+export const CREATED_POLL = 'CREATED_POLL';
+export function createdPoll(createdPoll) {
 	return {
-		type: FETCH_POLLS,
-		fetching 
+		type: CREATED_POLL,
+		createdPoll 
 	}
 }
 

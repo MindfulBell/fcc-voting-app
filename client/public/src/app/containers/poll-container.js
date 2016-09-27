@@ -7,9 +7,6 @@ import { refreshPoll, emptyPoll } from '../actions/index';
 class PollContainer extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			initial: true
-		}
 
 		this.processVote = this.processVote.bind(this);
 	}
@@ -30,7 +27,8 @@ class PollContainer extends Component {
 
 	render() {
 		return(
-			<Poll 
+			<Poll
+				createdByActiveUser={this.props.activePoll.createdBy === this.props.userId} 
 				processVote={this.processVote}
 				title={this.props.activePoll.title}
 				options={this.props.activePoll.options}
@@ -44,7 +42,8 @@ class PollContainer extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		activePoll: state.polls.activePoll
+		activePoll: state.polls.activePoll,
+		userId: state.user.id
 	}
 }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { getUserPolls, clearPolls } from '../actions/index';
-import PollLink from '../components/poll-link';
+import PollsList from '../components/poll-list';
 
 class ProfileContainer extends Component {
 	constructor(props) {
@@ -18,24 +18,11 @@ class ProfileContainer extends Component {
 	}
 
 	render() {
-		const polls = this.props.pollsList.map((poll, ind) => {
-			return (
-				<PollLink
-				className='poll-link'
-				title={poll.title} 
-				index={ind}
-				id={poll.id} 
-				key={ind}
-				/>
-			)
-		});
 		return (
 			<div className='main'>
 				<h1 className='title'> Your polls </h1>
 				<h3 className='subtitle'> <i>What will you ask today?</i> </h3>
-				<div className='poll-list'> 
-					{polls}
-				</div>
+				<PollsList pollsList={this.props.pollsList} />
 			</div>
 		)
 	}

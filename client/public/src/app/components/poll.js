@@ -3,6 +3,7 @@ import Chart, { Pie } from 'react-chartjs-2';
 
 
 export default (props) => {
+	console.log(props.createdByActiveUser);
 	let choices = [],
 		  labels = [],
 		  votes = [],
@@ -41,7 +42,7 @@ export default (props) => {
 		}
 
 	return (
-		<div className='main'>
+		<div className='chart-holder'>
 			<h2 className='title'>{props.title}</h2>
 			<Pie data={chartData} width={400} height={400} options={{
 				responsive: true
@@ -49,6 +50,13 @@ export default (props) => {
 			<div className='choices-container'>
 				{choices}
 			</div>
+
+			{ props.createdByActiveUser ? 
+				<a className="twitter-share-button"
+				  href="https://twitter.com/intent/tweet">
+				Tweet</a> : 
+				null
+			}
 		</div>
 	)
 }
