@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { loginRequest } from '../actions/index';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router';
 
 class LoginUser extends Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ class LoginUser extends Component {
 
 	componentWillReceiveProps(nextProps){
 		if (nextProps.user.loggedIn) { 
-			browserHistory.push('/'); 
+			this.props.router.push('/'); 
 		}
 	}
 
@@ -120,5 +120,7 @@ const mapStateToProps = (state) => {
 }
 
 LoginUser =  reduxForm({ form: 'LoginUserForm', validate })(LoginUser);
+
+LoginUser = withRouter(LoginUser);
 
 export default connect(mapStateToProps, { loginRequest })(LoginUser);

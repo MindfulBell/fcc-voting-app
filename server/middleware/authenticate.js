@@ -52,7 +52,7 @@ let authenticate = {
 		if (token) { 
 			jwt.verify(token, secret, (err, decoded) => {
 				if (err) {
-					return res.status(403).send({
+					return res.status(403).json({
 						success: false,
 						message: 'Failed to authenticate token.'
 					})
@@ -60,7 +60,7 @@ let authenticate = {
 				else {
 					req.decoded = decoded;
 					if (localStorageCheck) {
-						return res.status(200).send({
+						return res.status(200).json({
 							username: decoded.username,
 							id: decoded.id
 						})
@@ -70,7 +70,7 @@ let authenticate = {
 			})			
 		}
 		else {
-			return res.status(403).send({
+			return res.status(403).json({
 				success: false,
 				message: 'No token provided.'
 			})

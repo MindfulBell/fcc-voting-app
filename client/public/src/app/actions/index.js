@@ -61,36 +61,34 @@ export function clearPolls() {
 }
 
 export function createNewPoll(poll){
-	console.log('yo"')
+	console.log('Dispatching create new poll')
+
 	// request to make a poll and add it to database 
 	return (dispatch) => {
 		dispatch(showLoader());
-		makeAxiosRequest('post', `${ROOT_API}/polls`, poll)
+
+		return makeAxiosRequest('post', `${ROOT_API}/polls`, poll)
 			.then((response) => {
-				console.log(response);
+				console.log('succeeded');
 				dispatch(refreshPoll(response.data._id));
 				dispatch(hideLoader());
-				dispatch(createdPoll(true));
+
 			})
 			.catch((e) => {
+				console.log('failed')
+				dispatch(hideLoader());
 
-				// Error here...
-				// dispatch(createPollError(e))
-			})
-	}
-
-	// success: dispatch refreshPoll so it displays
-
-	// fail: send some error message to the form?
-}
-
-export const CREATED_POLL = 'CREATED_POLL';
-export function createdPoll(createdPoll) {
-	return {
-		type: CREATED_POLL,
-		createdPoll 
+			});
 	}
 }
+
+// export const POLL_CREATED = 'POLL_CREATED';
+// export function pollCreated(pollCreated) {
+// 	return {
+// 		type: POLL_CREATED,
+// 		pollCreated 
+// 	}
+// }
 
 // USER ACTIONS
 
@@ -107,7 +105,7 @@ export function loginFromStorage(token) {
 					}
 				}
 				dispatch(loginUser(user))
-		})
+			})
 			.catch((e) => {
 				dispatch(userLoginError(e))
 		})

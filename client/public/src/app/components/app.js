@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, withRouter } from 'react-router';
 
 import { loginFromStorage, logoutUser } from '../actions/index';
 
@@ -21,7 +21,7 @@ class App extends React.Component {
 	logoutUser() {
 		this.props.logoutUser();
 		localStorage.removeItem('token');
-		browserHistory.push('/');
+		this.props.router.push('/');
 	}
 
 	render() {
@@ -77,4 +77,7 @@ const mapDispatchToProps = (dispatch) => {
 		logoutUser: () => { dispatch(logoutUser()) }
 	}
 }
+
+App = withRouter(App);
+
 export default connect(mapStateToProps, mapDispatchToProps)(App); 

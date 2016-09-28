@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router';
 
 import { createNewPoll, createdPoll } from '../actions/index';
 
 class NewPollForm extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			options: 2
 		}
-
 		this.addOptionField = this.addOptionField.bind(this);
 		this.submitPoll = this.submitPoll.bind(this);
 	}
 
-	componentWillMount() {
-		this.props.createdPoll(false);
-	}
-
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
 		if (nextProps.polls.createdPoll) {
-			browserHistory.push(`/poll/${nextProps.polls.activePoll._id}`)
+			this.props.router.push(`/poll/${nextProps.polls.activePoll._id}`)
 		}
 	}
 
@@ -53,8 +46,7 @@ class NewPollForm extends Component {
 	}
 
 	render() {
-
-	const { handleSubmit, pristine, submitting } = this.props;
+	const { handleSubmit, pristine, submitting, polls, loader } = this.props;
 	let options = [];
 	for (let i=1; i<=this.state.options; i++) {
 		options.push(
@@ -73,7 +65,7 @@ class NewPollForm extends Component {
 					</div>
 					{options}
 					<div className='button' onClick={this.addOptionField}>Add option...</div>
-					{ this.props.loader.isLoading ? 
+					{ loader.isLoading ? 
 						<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
 						: <button type='submit' disabled={pristine || submitting}> Submit Poll </button>
 					}
@@ -91,8 +83,16 @@ const mapStateToProps = (state) => {
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		createNewPoll: () => { dispatch(createNewPoll(newPoll))}
+	}
+}
+
 NewPollForm = reduxForm({
 	form: 'newPoll'
 })(NewPollForm);
 
-export default connect(mapStateToProps, { createNewPoll, createdPoll })(NewPollForm)
+NewPollForm = withRouter(NewPollForm);
+
+export default connect(mapStateToProps, { createNewPoll })(NewPollForm)
