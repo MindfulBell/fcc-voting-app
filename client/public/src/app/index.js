@@ -3,16 +3,22 @@ import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
-import routes from './routes';
-import { Router, hashHistory } from 'react-router';
+import createRoutes from './routes';
+import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
+import { syncHistoryWithStore, routerActions, routerMiddleware } from 'react-router-redux';
+
 require("!style!css!sass!../css/main.scss");
 
-const storeWithMiddleware = applyMiddleware(promise, thunk)(createStore);
+const routingMiddleware = routerMiddleware(browserHistory);
+
+const store = createStore(reducers, applyMiddleware(promise, thunk, routingMiddleware))
+
+const history = syncHistoryWithStore(browserHistory, store);
 
 render(
-	<Provider store={storeWithMiddleware(reducers)}>
-		<Router history={hashHistory} routes={routes} />
+	<Provider store={store}>
+		<Router history={history} routes={createRoutes(store)} />
 	</Provider>, document.getElementById('app')
 );
