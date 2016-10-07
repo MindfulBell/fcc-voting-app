@@ -7,7 +7,7 @@ import createRoutes from './routes';
 import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
-import { syncHistoryWithStore, routerActions, routerMiddleware } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 require("!style!css!sass!../css/main.scss");
 

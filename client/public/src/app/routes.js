@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import { Authenticated } from './index';
 import App from './components/app';
 import HomeIndex from './components/home_index';
 import PollContainer from './containers/poll-container';

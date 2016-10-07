@@ -10,7 +10,7 @@ export default function makeAxiosRequest(type, url, body = {}) {
 		case 'patch':
 			return axios.patch(url, body);
 		case 'delete':
-
+			return axios.delete(url, { headers: {'X-Access-Token': body.token }})			
 		case 'post':
 			return axios.post(url, body);
 		default:

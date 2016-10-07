@@ -1,8 +1,9 @@
-import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, POLL_CREATED } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
-	activePoll: {}
+	activePoll: {},
+	deletePollFail: false
 };
 
 export default function (state = INITIAL_POLLS_STATE, action) {
@@ -25,7 +26,11 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 			return Object.assign({}, state, { activePoll });
 
 		case EMPTY_POLL:
+		case DELETE_POLL_SUCCESS:
 			return Object.assign({}, state, { activePoll: {} });
+
+		case DELETE_POLL_FAIL:
+
 
 		default: 
 			return state;

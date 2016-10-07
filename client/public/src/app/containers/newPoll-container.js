@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { withRouter } from 'react-router';
+import _ from 'lodash';
 
-import { createNewPoll, createdPoll } from '../actions/index';
+import { createNewPoll, newPollReset } from '../actions/index';
 
 class NewPollForm extends Component {
 	constructor(props) {
@@ -16,8 +17,11 @@ class NewPollForm extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.polls.createdPoll) {
+
+		if (!_.isEmpty(nextProps.polls.activePoll)) {
+			console.log('redirecting');
 			this.props.router.push(`/poll/${nextProps.polls.activePoll._id}`)
+
 		}
 	}
 
@@ -85,7 +89,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		createNewPoll: () => { dispatch(createNewPoll(newPoll))}
+		createNewPoll: () => { dispatch(createNewPoll(newPoll)) },
+		newPollReset: () => { dispatch(newPollReset()) }
 	}
 }
 

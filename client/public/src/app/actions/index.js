@@ -17,7 +17,7 @@ export function getPolls() {
 
 export const GET_USER_POLLS = 'GET_USER_POLLS';
 export function getUserPolls(userId, token) {
-	const payload = makeAxiosRequest('get', `${ROOT_API}/polls/${userId}`, {"token": token});
+	const payload = makeAxiosRequest('get', `${ROOT_API}/polls/${userId}`, { token });
 	return {
 		type: GET_USER_POLLS,
 		payload
@@ -25,21 +25,22 @@ export function getUserPolls(userId, token) {
 }
 
 export const REFRESH_POLL = 'REFRESH_POLL';
-export function refreshPoll(pollId, votedFor = null, newOption = null) {
+export function refreshPoll(pollId, votedFor = null, newOption = false, token) {
 	let url, type, payload;
 
-	if (votedFor) {
+	if (votedFor && newOption === null) {
 		url = `${ROOT_API}/polls/vote/${pollId}`;
 		type = 'patch';
 	}
 	else if (newOption) {
-		//build a new option
+		url = `${ROOT_API}/polls/${pollId}`;
+		type = 'patch';
 	}
 	else {
 		url = `${ROOT_API}/polls/single/${pollId}`;
 		type = 'get';
 	}
-	payload = makeAxiosRequest(type, url, {votedFor}).catch((e)=>{ console.log(e)});
+	payload = makeAxiosRequest(type, url, {votedFor, token}).catch((e)=>{ console.log(e)} );
 	return {
 		type: REFRESH_POLL,
 		payload
@@ -72,6 +73,7 @@ export function createNewPoll(poll){
 				console.log('succeeded');
 				dispatch(refreshPoll(response.data._id));
 				dispatch(hideLoader());
+				dispatch(addedNewPoll());
 
 			})
 			.catch((e) => {
@@ -82,13 +84,39 @@ export function createNewPoll(poll){
 	}
 }
 
-// export const POLL_CREATED = 'POLL_CREATED';
-// export function pollCreated(pollCreated) {
-// 	return {
-// 		type: POLL_CREATED,
-// 		pollCreated 
-// 	}
-// }
+export const DELETE_POLL_SUCCESS = 'DELETE_POLL_SUCCESS';
+function deletePollSuccess() {
+	return {
+		type: DELETE_POLL_SUCCESS
+	}
+}
+
+export const DELETE_POLL_FAIL = 'DELETE_POLL_FAIL';
+function deletePollFail(e) {
+	return {
+		type: DELETE_POLL_FAIL,
+		e
+	}
+}
+
+export function deletePoll(id, token) {
+	console.log('Deleting Poll...');
+	console.log(token);
+	return (dispatch) => {
+		dispatch(showLoader());
+
+		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
+			.then((response) => {
+				console.log(response);
+				dispatch(deletePollSuccess());
+				dispatch(hideLoader());
+		}).catch((e)=>{ 
+				console.log(e)
+				dispatch(deletePollFail(e));
+				dispatch(hideLoader());
+		});
+	}
+}
 
 // USER ACTIONS
 
