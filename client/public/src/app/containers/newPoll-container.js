@@ -20,7 +20,7 @@ class NewPollForm extends Component {
 
 		if (!_.isEmpty(nextProps.polls.activePoll)) {
 			console.log('redirecting');
-			this.props.router.push(`/poll/${nextProps.polls.activePoll._id}`)
+			this.props.router.push(`/poll/${nextProps.polls.activePoll.id}`)
 
 		}
 	}

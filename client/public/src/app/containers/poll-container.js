@@ -19,8 +19,14 @@ class PollContainer extends Component {
 		this.handleDelete = this.handleDelete.bind(this);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.activePoll && _.isEmpty(nextProps.activePoll)) {
+			this.props.router.push(`/user/${this.props.user.id}`)
+		}
+	}
+
 	componentWillMount() {
-		// Set the active poll based on the params above...it works...but not getting the info in time to render it...
+		// Set the active poll based on the params above
 		this.props.refreshPoll(this.props.params.pollId);
 	}
 
@@ -34,7 +40,7 @@ class PollContainer extends Component {
 	}
 
 	addOption() {
-		this.props.refreshPoll(this.props.activePoll._id, this.state.newOptionVal, true, this.props.user.auth.token);
+		this.props.refreshPoll(this.props.activePoll.id, this.state.newOptionVal, true, this.props.user.auth.token);
 		this.setState({
 			newOptionVal: ''
 		});
@@ -47,7 +53,7 @@ class PollContainer extends Component {
 	}
 
 	handleDelete() {
-		this.props.deletePoll(this.props.activePoll._id, this.props.user.auth.token);
+		this.props.deletePoll(this.props.activePoll.id, this.props.user.auth.token)
 	}
 
 	render() {
@@ -58,7 +64,7 @@ class PollContainer extends Component {
 				title={this.props.activePoll.title}
 				options={this.props.activePoll.options}
 				totalVotes={this.props.activePoll.totalVotes}
-				id={this.props.activePoll._id}
+				id={this.props.activePoll.id}
 				loggedIn={this.props.user.loggedIn}
 				value={this.state.newOptionVal}
 				updateValue={this.updateValue}
@@ -84,5 +90,7 @@ const mapDispatchToProps = (dispatch) => {
 			deletePoll: (id, token) => { dispatch(deletePoll(id, token)) }
 		}
 	}
+
+PollContainer = withRouter(PollContainer);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollContainer);

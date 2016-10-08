@@ -23,6 +23,8 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 
 		case REFRESH_POLL: 
 			let activePoll = action.payload.data;
+			activePoll.id = activePoll._id;
+			delete activePoll._id;
 			return Object.assign({}, state, { activePoll });
 
 		case EMPTY_POLL:

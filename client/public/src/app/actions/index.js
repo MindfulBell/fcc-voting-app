@@ -28,7 +28,7 @@ export const REFRESH_POLL = 'REFRESH_POLL';
 export function refreshPoll(pollId, votedFor = null, newOption = false, token) {
 	let url, type, payload;
 
-	if (votedFor && newOption === null) {
+	if (votedFor && !newOption) {
 		url = `${ROOT_API}/polls/vote/${pollId}`;
 		type = 'patch';
 	}
@@ -36,7 +36,7 @@ export function refreshPoll(pollId, votedFor = null, newOption = false, token) {
 		url = `${ROOT_API}/polls/${pollId}`;
 		type = 'patch';
 	}
-	else {
+	else if (pollId) {
 		url = `${ROOT_API}/polls/single/${pollId}`;
 		type = 'get';
 	}
@@ -73,14 +73,44 @@ export function createNewPoll(poll){
 				console.log('succeeded');
 				dispatch(refreshPoll(response.data._id));
 				dispatch(hideLoader());
-				dispatch(addedNewPoll());
-
 			})
 			.catch((e) => {
-				console.log('failed')
+				console.log(e)
 				dispatch(hideLoader());
 
 			});
+	}
+}
+
+export const CREATE_POLL_SUCCESS = 'CREATE_POLL_SUCCESS';
+function createPollSuccess() {
+	return {
+		type: CREATE_POLL_SUCCESS
+	}
+}
+
+export const CREATE_POLL_FAIL = 'CREATE_POLL_FAIL';
+function createPollFail(e) {
+	return {
+		type: CREATE_POLL_FAIL,
+		e
+	}
+}
+
+export function deletePoll(id, token) {
+	return (dispatch) => {
+		dispatch(showLoader());
+
+		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
+			.then((response) => {
+				console.log(response);
+				dispatch(deletePollSuccess());
+				dispatch(hideLoader());
+		}).catch((e)=>{ 
+				console.log(e)
+				dispatch(deletePollFail(e));
+				dispatch(hideLoader());
+		});
 	}
 }
 
@@ -96,25 +126,6 @@ function deletePollFail(e) {
 	return {
 		type: DELETE_POLL_FAIL,
 		e
-	}
-}
-
-export function deletePoll(id, token) {
-	console.log('Deleting Poll...');
-	console.log(token);
-	return (dispatch) => {
-		dispatch(showLoader());
-
-		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
-			.then((response) => {
-				console.log(response);
-				dispatch(deletePollSuccess());
-				dispatch(hideLoader());
-		}).catch((e)=>{ 
-				console.log(e)
-				dispatch(deletePollFail(e));
-				dispatch(hideLoader());
-		});
 	}
 }
 
