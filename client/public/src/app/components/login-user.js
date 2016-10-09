@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { loginRequest } from '../actions/index';
+import { loginRequest, clearCreateError } from '../actions/index';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
@@ -17,6 +17,7 @@ class LoginUser extends Component {
 
 	componentWillUnmount(){
 		localStorage.setItem('token', this.props.token);
+		this.props.clearCreateError();
 	}
 
 	onFormSubmit(params) {
@@ -24,6 +25,7 @@ class LoginUser extends Component {
 	}
 
 	render() {
+		console.log(this.props.user.auth, this.props.newUser)
 		const { handleSubmit, pristine, submitting } = this.props;
 
 		if (this.props.user.loggedIn) {
@@ -65,7 +67,12 @@ class LoginUser extends Component {
 								<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
 								: <button type='submit' disabled={pristine || submitting}> Submit </button>
 							}
-						</div>			
+						</div>
+						{this.props.newUser && this.props.user.createError ? 
+							<div className='message'>{this.props.user.createError}</div>
+							:
+							null
+						}			
 					</form>
 				</div>
 			)
@@ -123,4 +130,4 @@ LoginUser =  reduxForm({ form: 'LoginUserForm', validate })(LoginUser);
 
 LoginUser = withRouter(LoginUser);
 
-export default connect(mapStateToProps, { loginRequest })(LoginUser);
+export default connect(mapStateToProps, { loginRequest, clearCreateError })(LoginUser);

@@ -5,7 +5,7 @@ class UserController {
 		user.save((err) => {
 			if (err) {
 				if (err.code == 11000) {
-					return res.json({success: false, message: "A user with that name already exists"});
+					return res.status(200).json({success: false, message: "A user with that name already exists"});
 				}
 				else {
 					console.log(err);

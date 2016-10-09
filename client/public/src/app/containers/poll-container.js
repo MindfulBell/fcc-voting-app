@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Poll from '../components/poll';
-import { refreshPoll, emptyPoll, deletePoll } from '../actions/index';
+import { refreshPoll, emptyPoll, deletePoll, clearPollError } from '../actions/index';
 
 class PollContainer extends Component {
 	constructor(props) {
@@ -33,6 +33,7 @@ class PollContainer extends Component {
 	componentWillUnmount() {
 		// remove active poll to prevent flashing of options on poll switch, also helps manage creating new poll flow
 		this.props.emptyPoll();
+		this.props.clearPollError();
 	}
 
 	processVote(pollId, votedFor) {
@@ -70,6 +71,8 @@ class PollContainer extends Component {
 				updateValue={this.updateValue}
 				addOption={this.addOption}
 				handleDelete={this.handleDelete}
+				errorMessage={this.props.errorMessage}
+				isLoading={this.props.isLoading}
 			/>
 		)
 	}
@@ -79,7 +82,9 @@ class PollContainer extends Component {
 const mapStateToProps = (state) => {
 	return {
 		activePoll: state.polls.activePoll,
-		user: state.user
+		user: state.user,
+		errorMessage: state.polls.pollErrorMessage,
+		isLoading: state.loader.isLoading
 	}
 }
 
@@ -87,7 +92,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 			refreshPoll: (id, votedFor, newOption, token) => {dispatch(refreshPoll(id, votedFor, newOption, token))},
 			emptyPoll: () => { dispatch(emptyPoll()) },
-			deletePoll: (id, token) => { dispatch(deletePoll(id, token)) }
+			deletePoll: (id, token) => { dispatch(deletePoll(id, token)) },
+			clearPollError: () => { dispatch(clearPollError()) }
 		}
 	}
 

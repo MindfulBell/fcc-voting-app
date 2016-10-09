@@ -10,7 +10,8 @@ class NewPollForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: 2
+			options: 2,
+			validateError: false
 		}
 		this.addOptionField = this.addOptionField.bind(this);
 		this.submitPoll = this.submitPoll.bind(this);
@@ -34,9 +35,15 @@ class NewPollForm extends Component {
 	submitPoll(params) {
 		let options = [];
 		for (let key in params) {
-			if (key !== 'title') {
+			if (key !== 'title' && params[key] !== undefined) {
 				options.push({optionName: params[key], votes: 0})
 			}
+		}
+		if (!params.title || options.length < 2) {
+			this.setState({
+				validateError: "Please add a title and at least 2 options"
+			})
+			return;
 		}
 		const newPoll = { 
 			poll: { 
@@ -47,6 +54,9 @@ class NewPollForm extends Component {
 			token: this.props.user.auth.token
 		};
 		this.props.createNewPoll(newPoll);
+		this.setState({
+			validateError: false
+		})
 	}
 
 	render() {
@@ -60,6 +70,7 @@ class NewPollForm extends Component {
 			</div>
 		)
 	}
+
 		return (
 			<div className='main'>
 				<form onSubmit={handleSubmit(this.submitPoll)}>
@@ -67,12 +78,22 @@ class NewPollForm extends Component {
 						<label htmlFor='title'> Name Your Poll... </label>
 						<Field name='title' component='input' type='text'/>
 					</div>
-					{options}
+					<div className='new-options-container'>
+						{options}
+					</div>
 					<div className='button' onClick={this.addOptionField}>Add option...</div>
 					{ loader.isLoading ? 
 						<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
-						: <button type='submit' disabled={pristine || submitting}> Submit Poll </button>
+						: <button type='submit' disabled={pristine}> Submit Poll </button>
 					}
+					<div className='message'>
+					{ this.props.errorMessage ?
+						<span>{this.props.errorMessage}</span> : null
+					}
+					</div>
+					<div className='message'>
+						{ this.state.validateError ? <span>{this.state.validateError}</span> : null}
+					</div>
 				</form>
 			</div>
 		)
@@ -83,7 +104,8 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user,
 		loader: state.loader,
-		polls: state.polls
+		polls: state.polls,
+		errorMessage: state.polls.pollErrorMessage
 	}
 }
 

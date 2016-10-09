@@ -58,8 +58,19 @@ export default (props) => {
 				 target="#blank">
 				Tweet 
 			</a>
-			<div className='delete' onClick={handleDelete}> 
-				Delete This Poll 
+				{
+					props.isLoading ? 
+					<i className="fa fa-spinner fa-2x loading" aria-hidden="true">
+					</i>
+					:
+					<div className='delete' onClick={handleDelete}> 
+						Delete this poll!
+					</div>
+				}
+			<div className='message'>
+				{
+					props.errorMessage ? <span>{props.errorMessage}</span> : null
+				}
 			</div>
 		</div>
 

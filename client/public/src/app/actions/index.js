@@ -61,23 +61,24 @@ export function clearPolls() {
 	}
 }
 
-export function createNewPoll(poll){
+export function createNewPoll(pollWithToken){
 	console.log('Dispatching create new poll')
 
 	// request to make a poll and add it to database 
 	return (dispatch) => {
 		dispatch(showLoader());
 
-		return makeAxiosRequest('post', `${ROOT_API}/polls`, poll)
+		return makeAxiosRequest('post', `${ROOT_API}/polls`, pollWithToken)
 			.then((response) => {
 				console.log('succeeded');
 				dispatch(refreshPoll(response.data._id));
 				dispatch(hideLoader());
+				dispatch(createPollSuccess());
 			})
 			.catch((e) => {
 				console.log(e)
 				dispatch(hideLoader());
-
+				dispatch(createPollFail());
 			});
 	}
 }
@@ -90,10 +91,9 @@ function createPollSuccess() {
 }
 
 export const CREATE_POLL_FAIL = 'CREATE_POLL_FAIL';
-function createPollFail(e) {
+function createPollFail() {
 	return {
-		type: CREATE_POLL_FAIL,
-		e
+		type: CREATE_POLL_FAIL
 	}
 }
 
@@ -103,11 +103,10 @@ export function deletePoll(id, token) {
 
 		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
 			.then((response) => {
-				console.log(response);
 				dispatch(deletePollSuccess());
 				dispatch(hideLoader());
 		}).catch((e)=>{ 
-				console.log(e)
+				console.log(e);
 				dispatch(deletePollFail(e));
 				dispatch(hideLoader());
 		});
@@ -124,8 +123,14 @@ function deletePollSuccess() {
 export const DELETE_POLL_FAIL = 'DELETE_POLL_FAIL';
 function deletePollFail(e) {
 	return {
-		type: DELETE_POLL_FAIL,
-		e
+		type: DELETE_POLL_FAIL
+	}
+}
+
+export const CLEAR_POLL_ERROR = 'CLEAR_POLL_ERROR';
+export function clearPollError() {
+	return {
+		type: CLEAR_POLL_ERROR
 	}
 }
 
@@ -133,6 +138,7 @@ function deletePollFail(e) {
 
 export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
 export function loginFromStorage(token) {
+	console.log('logging in from storage')
 	return (dispatch) => {
 		return makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
 			.then((response) => {
@@ -151,6 +157,49 @@ export function loginFromStorage(token) {
 	}
 }
 
+
+export function loginRequest(user = {}, newUser = false) {
+	return (dispatch) => {
+		dispatch(showLoader());
+		if (newUser) {
+			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
+				.then((response) => {
+					if (!response.data.success) {
+						dispatch(createUserError(response.data.message));
+						dispatch(hideLoader());
+					}
+					else {
+						makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+							.then((response) => { 
+								dispatch(loginUser(response));
+								dispatch(hideLoader()); 
+							})
+					}
+			}).catch((e) => { 
+				
+			});
+		}
+
+		else {
+			return makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+				.then((response) => { 
+					dispatch(loginUser(response));
+					dispatch(hideLoader()); 
+				})
+				.catch((e) => { 
+					dispatch(userLoginError(e));
+			});
+		}
+	}
+}
+
+export const CREATE_USER_ERROR = 'CREATE_USER_ERROR'
+function createUserError(message) {
+	return {
+		type: CREATE_USER_ERROR,
+		payload: message
+	}
+}
 
 export const LOGIN_USER = 'LOGIN_USER';
 function loginUser(user) {
@@ -175,38 +224,12 @@ export function logoutUser() {
 	}
 }
 
-
-export function loginRequest(user = {}, newUser = false) {
-	let payload;
-	return (dispatch) => {
-		dispatch(showLoader());
-
-		if (newUser) {
-			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
-				.then(() => {
-					makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-						.then((response) => { 
-							dispatch(loginUser(response));
-							dispatch(hideLoader()); 
-						});
-			}).catch((e) => { 
-					dispatch(userLoginError(e));
-			});
-		}
-
-		else {
-			return makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-				.then((response) => { 
-					dispatch(loginUser(response));
-					dispatch(hideLoader()); 
-				})
-				.catch((e) => { 
-					dispatch(userLoginError(e));
-			});
-		}
+export const CLEAR_CREATE_ERROR = 'CLEAR_CREATE_ERROR';
+export function clearCreateError() {
+	return {
+		type: CLEAR_CREATE_ERROR
 	}
 }
-
 
 
 // LOADER ACTIONS

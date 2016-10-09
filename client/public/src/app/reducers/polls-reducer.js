@@ -1,9 +1,9 @@
-import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, CREATE_POLL_FAIL, CREATE_POLL_SUCCESS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL, CLEAR_POLL_ERROR } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
 	activePoll: {},
-	deletePollFail: false
+	pollErrorMessage: ''
 };
 
 export default function (state = INITIAL_POLLS_STATE, action) {
@@ -29,11 +29,15 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 
 		case EMPTY_POLL:
 		case DELETE_POLL_SUCCESS:
-			return Object.assign({}, state, { activePoll: {} });
-
+			return Object.assign({}, state, { activePoll: {}, pollErrorMessage: '' });
+		case CREATE_POLL_SUCCESS:
+			return Object.assign({}, state, { pollErrorMessage: '' })
 		case DELETE_POLL_FAIL:
+		case CREATE_POLL_FAIL:
+			return Object.assign({}, state, { pollErrorMessage: "Hmm, something's wrong, please try again later!"})
 
-
+		case CLEAR_POLL_ERROR: 
+			return Object.assign({}, state, { pollErrorMessage: '' })
 		default: 
 			return state;
 	}
