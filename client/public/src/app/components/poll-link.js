@@ -2,10 +2,15 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default (props) => {
-	let animation = `appear ${props.index%4 + .5}s ease-out  1`;
+	const animationStyle = {
+		"animationName": 'slideUp',
+		"animationDuration": '2500ms',
+		"animationIterationCount": '1',
+		"animationDelay": `${props.index * 100}ms`
+	};
 	return (
 		<Link to={`/poll/${props.id}`}>
-			<div className='poll-link' style={{animation}}>
+			<div className='poll-link' style={animationStyle}>
 				<h3>{props.title}</h3>
 			</div>
 		</Link>

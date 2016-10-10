@@ -37,14 +37,14 @@ class HomeIndex extends Component {
 			<div className='main'>
 				<div className='jumbotron'>
 					<ReactCSSTransitionGroup transitionName="fade" {...titleAndNTransition}>
-						<h1 key='title' className='title'> Cou
+						<h1 className='title'> Cou
 						<ReactCSSTransitionGroup transitionName="slide" {...titleAndNTransition}>
-							<span key='n' className='n'>n</span>
+							<span className='n'>n</span>
 						</ReactCSSTransitionGroup>
 						ts </h1>
 					</ReactCSSTransitionGroup>
 					<ReactCSSTransitionGroup {...subtitleTransition}>
-						<h3  className='subtitle'> Choose Wisely... </h3>
+						<h3 className='subtitle'> Choose Wisely... </h3>
 					</ReactCSSTransitionGroup>
 				</div>
 				<PollList pollsList={this.props.pollsList} />
