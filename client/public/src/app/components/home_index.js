@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getPolls, setActivePoll, clearPolls } from '../actions/index';
 import PollList from './poll-list';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 class HomeIndex extends Component {
@@ -18,10 +19,34 @@ class HomeIndex extends Component {
 	}
 	render() {
 
+		const titleAndNTransition = {
+			transitionAppear: true,
+			transitionAppearTimeout: 2500,
+			transitionEnter: false,
+			transitionLeave: false
+		};
+		const subtitleTransition = {
+			transitionName: 'slideUp',
+			transitionAppear: true,
+			transitionAppearTimeout: 4000,
+			transitionEnter: false,
+			transitionLeave: false
+		};
+
 		return (
 			<div className='main'>
-				<h1 className='title'> Counts </h1>
-				<h3 className='subtitle'> <i>Vote for what you believe in...</i> </h3>
+				<div className='jumbotron'>
+					<ReactCSSTransitionGroup transitionName="fade" {...titleAndNTransition}>
+						<h1 key='title' className='title'> Cou
+						<ReactCSSTransitionGroup transitionName="slide" {...titleAndNTransition}>
+							<span key='n' className='n'>n</span>
+						</ReactCSSTransitionGroup>
+						ts </h1>
+					</ReactCSSTransitionGroup>
+					<ReactCSSTransitionGroup {...subtitleTransition}>
+						<h3  className='subtitle'> Choose Wisely... </h3>
+					</ReactCSSTransitionGroup>
+				</div>
 				<PollList pollsList={this.props.pollsList} />
 			</div>
 		)

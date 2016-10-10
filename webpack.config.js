@@ -25,6 +25,10 @@ const config = {
 			{ 
 				test: /\.scss$/, 
 				loaders: ["style", "css", "sass"]
+			},
+			{
+				test: /\.(jpg|png)$/,
+				loader: 'url?limit=25000'
 			}
 		]
 	},
