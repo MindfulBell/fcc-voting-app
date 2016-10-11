@@ -27,7 +27,6 @@ export function getUserPolls(userId, token) {
 export const REFRESH_POLL = 'REFRESH_POLL';
 export function refreshPoll(pollId, votedFor = null, newOption = false, token) {
 	let url, type, payload;
-
 	if (votedFor && !newOption) {
 		url = `${ROOT_API}/polls/vote/${pollId}`;
 		type = 'patch';
@@ -164,19 +163,20 @@ export function loginRequest(user = {}, newUser = false) {
 		if (newUser) {
 			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
 				.then((response) => {
-					if (!response.data.success) {
+					if (response.data.success === false) {
 						dispatch(createUserError(response.data.message));
 						dispatch(hideLoader());
 					}
 					else {
 						makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-							.then((response) => { 
+							.then((response) => {
 								dispatch(loginUser(response));
 								dispatch(hideLoader()); 
 							})
 					}
 			}).catch((e) => { 
-				
+				dispatch(createUserError(e));
+				dispatch(hideLoader());
 			});
 		}
 

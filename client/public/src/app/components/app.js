@@ -12,8 +12,7 @@ class App extends React.Component {
 	}
 
 	componentWillMount() {  
-		if (localStorage.getItem('token') !== 'undefined') {
-			console.log('yo')
+		if (localStorage.hasOwnProperty('token') && localStorage.getItem('token') !== 'undefined') {
 			const token = localStorage.getItem('token');
 			this.props.loginFromStorage(token);
 		}

@@ -28,6 +28,9 @@ class PollContainer extends Component {
 	componentWillMount() {
 		// Set the active poll based on the params above
 		this.props.refreshPoll(this.props.params.pollId);
+
+		// If next props.options length > current props options length, then add a color to background color array?
+
 	}
 
 	componentWillUnmount() {
@@ -58,12 +61,14 @@ class PollContainer extends Component {
 	}
 
 	render() {
+		console.log(this.state.backgroundColors)
 		return(
 			<Poll
 				createdByActiveUser={this.props.activePoll.createdBy === this.props.user.id} 
 				processVote={this.processVote}
 				title={this.props.activePoll.title}
 				options={this.props.activePoll.options}
+				lastOptionsLength={this.props.activePoll.options.length - 1}
 				totalVotes={this.props.activePoll.totalVotes}
 				id={this.props.activePoll.id}
 				loggedIn={this.props.user.loggedIn}
@@ -73,6 +78,7 @@ class PollContainer extends Component {
 				handleDelete={this.handleDelete}
 				errorMessage={this.props.errorMessage}
 				isLoading={this.props.isLoading}
+				backgroundColors={this.state.backgroundColors}
 			/>
 		)
 	}

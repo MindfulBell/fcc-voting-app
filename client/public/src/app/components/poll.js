@@ -1,5 +1,6 @@
 import React from 'react';
 import Chart, { Pie } from 'react-chartjs-2';
+import { Link } from 'react-router';
 
 
 export default (props) => {
@@ -10,8 +11,10 @@ export default (props) => {
 		  votes = [],
 		  backgroundColor = [];
 
+		  // ONLY GET NEW COLORS WHEN PROCESSING A VOTE!!! HOW?!
 	if (props.options) {
 		props.options.forEach((option, ind, arr)=>{
+
 			const randRGB = () => Math.floor(Math.random()*(256-1)) + 1;
 			let color = `rgb(${randRGB()}, ${randRGB()}, ${randRGB()})`;
 			backgroundColor.push(color)
@@ -82,16 +85,21 @@ export default (props) => {
 			}}/>
 			<div className='choices-container'>
 				{choices}
+			</div>
+			<div className='add-option-container'>
+			<h4> Add an option! </h4>
 				{ props.loggedIn ? 
 					<form className='new-option-form' onSubmit={(e) => {addOption(e)}}> 
-						<input type='text' 
-							placeholder='New Option' 
+						<input 
+							className='form-input'
+							type='text' 
+							placeholder='New option...' 
 							value={props.value}
 							onChange={(e) => {props.updateValue(e.target.value)}}
 						/>
-						<button type='submit'> Add Option and Vote </button>
+						<button type='submit'> Add option and vote </button>
 					</form> :
-					<div> Don't like the choices? Login to create a new option! </div> 
+					<div> Don't like the choices? <Link to={`/user/login`}><span className='login-link'>Login</span></Link> to create a new option! </div> 
 				}
 			</div>
 			{ props.createdByActiveUser ? activeUserOptions :	null }
