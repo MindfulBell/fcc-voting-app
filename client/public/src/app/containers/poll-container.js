@@ -2,20 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import Poll from '../components/poll';
+import Chart from '../components/Chart';
+import AddOption from '../components/add-option';
 import { refreshPoll, emptyPoll, deletePoll, clearPollError } from '../actions/index';
 
 class PollContainer extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			newOptionVal: ''
-		}
-
 		this.processVote = this.processVote.bind(this);
 		this.addOption = this.addOption.bind(this);
-		this.updateValue = this.updateValue.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 	}
 
@@ -43,17 +39,8 @@ class PollContainer extends Component {
 		this.props.refreshPoll(pollId, votedFor);
 	}
 
-	addOption() {
-		this.props.refreshPoll(this.props.activePoll.id, this.state.newOptionVal, true, this.props.user.auth.token);
-		this.setState({
-			newOptionVal: ''
-		});
-	}
-
-	updateValue(value) {
-		this.setState({
-			newOptionVal: value
-		});
+	addOption(value) {
+		this.props.refreshPoll(this.props.activePoll.id, value, true, this.props.user.auth.token);
 	}
 
 	handleDelete() {
@@ -61,25 +48,26 @@ class PollContainer extends Component {
 	}
 
 	render() {
-		console.log(this.state.backgroundColors)
 		return(
-			<Poll
-				createdByActiveUser={this.props.activePoll.createdBy === this.props.user.id} 
-				processVote={this.processVote}
-				title={this.props.activePoll.title}
-				options={this.props.activePoll.options}
-				lastOptionsLength={this.props.activePoll.options.length - 1}
-				totalVotes={this.props.activePoll.totalVotes}
-				id={this.props.activePoll.id}
-				loggedIn={this.props.user.loggedIn}
-				value={this.state.newOptionVal}
-				updateValue={this.updateValue}
-				addOption={this.addOption}
-				handleDelete={this.handleDelete}
-				errorMessage={this.props.errorMessage}
-				isLoading={this.props.isLoading}
-				backgroundColors={this.state.backgroundColors}
-			/>
+			<div>
+				<Chart
+					title={this.props.activePoll.title}
+					options={this.props.activePoll.options}
+					totalVotes={this.props.activePoll.totalVotes}
+					id={this.props.activePoll.id}
+					isLoading={this.props.isLoading}
+					processVote={this.processVote} 
+				/>
+				<AddOption
+					handleDelete={this.handleDelete}
+					loggedIn={this.props.user.loggedIn}
+					title={this.props.activePoll.title}
+					createdByActiveUser={this.props.activePoll.createdBy === this.props.user.id} 
+					isLoading={this.props.isLoading}
+					addOption={this.addOption}
+					errorMessage={this.props.errorMessage}
+				/>
+			</div>
 		)
 	}
 }
