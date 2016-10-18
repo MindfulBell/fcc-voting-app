@@ -10,15 +10,16 @@ export default (props) => {
 		  votes = [],
 		  backgroundColor = [];
 
+		  // ONLY GET NEW COLORS WHEN PROCESSING A VOTE!!! HOW?!
 	if (props.options) {
 		props.options.forEach((option, ind, arr)=>{
+
 			const randRGB = () => Math.floor(Math.random()*(256-1)) + 1;
 			let color = `rgb(${randRGB()}, ${randRGB()}, ${randRGB()})`;
 			backgroundColor.push(color)
 
 			labels.push(option.optionName);
 			votes.push(option.votes);
-
 
 			choices.push(
 			<button key={ind}
@@ -28,8 +29,6 @@ export default (props) => {
 				{option.optionName}
 			</button>
 			)
-
-			
 		});
 	}
 	let chartData = {
@@ -42,38 +41,6 @@ export default (props) => {
 			}]
 		}
 
-	function addOption(e) {
-		e.preventDefault();
-		props.addOption();
-	}
-
-	function handleDelete() {
-		props.handleDelete();
-	}
-
-	let activeUserOptions = 
-		<div className='active-user-options'>
-			<a className="twitter-share-button" 
-				 href={twitterLink} 
-				 target="#blank">
-				Tweet 
-			</a>
-				{
-					props.isLoading ? 
-					<i className="fa fa-spinner fa-2x loading" aria-hidden="true">
-					</i>
-					:
-					<div className='delete' onClick={handleDelete}> 
-						Delete this poll!
-					</div>
-				}
-			<div className='message'>
-				{
-					props.errorMessage ? <span>{props.errorMessage}</span> : null
-				}
-			</div>
-		</div>
-
 	return (
 		<div className='chart-holder'>
 			<h2 className='title'>{props.title}</h2>
@@ -82,19 +49,7 @@ export default (props) => {
 			}}/>
 			<div className='choices-container'>
 				{choices}
-				{ props.loggedIn ? 
-					<form className='new-option-form' onSubmit={(e) => {addOption(e)}}> 
-						<input type='text' 
-							placeholder='New Option' 
-							value={props.value}
-							onChange={(e) => {props.updateValue(e.target.value)}}
-						/>
-						<button type='submit'> Add Option and Vote </button>
-					</form> :
-					<div> Don't like the choices? Login to create a new option! </div> 
-				}
 			</div>
-			{ props.createdByActiveUser ? activeUserOptions :	null }
 		</div>
 	)
 }
