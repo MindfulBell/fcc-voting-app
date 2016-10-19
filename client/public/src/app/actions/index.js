@@ -25,24 +25,41 @@ export function getUserPolls(userId, token) {
 }
 
 export const REFRESH_POLL = 'REFRESH_POLL';
-export function refreshPoll(pollId, votedFor = null, newOption = false, token) {
-	let url, type, payload;
-	if (votedFor && !newOption) {
-		url = `${ROOT_API}/polls/vote/${pollId}`;
-		type = 'patch';
-	}
-	else if (newOption) {
-		url = `${ROOT_API}/polls/${pollId}`;
-		type = 'patch';
-	}
-	else if (pollId) {
-		url = `${ROOT_API}/polls/single/${pollId}`;
-		type = 'get';
-	}
-	payload = makeAxiosRequest(type, url, {votedFor, token}).catch((e)=>{ console.log(e)} );
+export function refreshPoll(poll) {
 	return {
 		type: REFRESH_POLL,
-		payload
+		payload: poll
+	}
+}
+
+export function voteOnPoll(pollId, votedFor, newOption = false, token = null){
+	return (dispatch) => {
+		dispatch(showLoader());
+		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
+		makeAxiosRequest('patch', url, {votedFor, token})
+			.then((response) => {
+				dispatch(hideLoader());
+				dispatch(refreshPoll(response.data));
+			})
+			.catch((e) => {
+				console.log(e);
+				dispatch(hideLoader());
+				// handle vote fail
+			})
+	}
+}
+
+export function getPoll(pollId) {
+	const url = `${ROOT_API}/polls/single/${pollId}`;
+	return (dispatch) => {
+		makeAxiosRequest('get', url)
+			.then((response) => {
+				dispatch(refreshPoll(response.data));
+			})
+			.catch((e) => {
+				console.log(e);
+				// handle get vote fail
+			})		
 	}
 }
 
@@ -61,8 +78,6 @@ export function clearPolls() {
 }
 
 export function createNewPoll(pollWithToken){
-	console.log('Dispatching create new poll')
-
 	// request to make a poll and add it to database 
 	return (dispatch) => {
 		dispatch(showLoader());
@@ -133,11 +148,17 @@ export function clearPollError() {
 	}
 }
 
+export const RESET_SUCCESS = 'RESET_SUCCESS';
+export function resetSuccess() {
+	return { 
+		type: RESET_SUCCESS
+	}
+}
+
 // USER ACTIONS
 
 export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
 export function loginFromStorage(token) {
-	console.log('logging in from storage')
 	return (dispatch) => {
 		return makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
 			.then((response) => {

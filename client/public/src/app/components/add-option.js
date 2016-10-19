@@ -21,6 +21,7 @@ handleDelete() {
 addOption(e) {
 	e.preventDefault();
 	this.props.addOption(this.state.value);
+	this.setState({value: ''})
 }
 
 updateValue(value) {
@@ -65,7 +66,7 @@ render() {
 								className='form-input'
 								type='text' 
 								placeholder='New option...' 
-								value={this.props.value}
+								value={this.state.value}
 								onChange={(e) => {this.updateValue(e.target.value)}}
 							/>
 							<button type='submit'> Add option and vote </button>

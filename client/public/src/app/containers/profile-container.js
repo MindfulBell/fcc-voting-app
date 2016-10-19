@@ -9,7 +9,7 @@ class ProfileContainer extends Component {
 		super(props);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.getUserPolls(this.props.params.userId, this.props.token)
 	}
 

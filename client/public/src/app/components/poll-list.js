@@ -27,9 +27,7 @@ export default (props) => {
 	}
 	return (
 		<div className='poll-list'>
-			<ReactCSSTransitionGroup {...appearTransition}>
 			{props.pollsList.length > 0 ? polls : null}
-			</ReactCSSTransitionGroup>
 		</div>
 	)
 }

@@ -10,7 +10,7 @@ export default (props) => {
 	};
 	return (
 		<Link to={`/poll/${props.id}`}>
-			<div className='poll-link' style={animationStyle}>
+			<div className='poll-link'>
 				<h3>{props.title}</h3>
 			</div>
 		</Link>

@@ -41,6 +41,7 @@ pollRouter.route('/polls/:id')
 	
 	// **PATCH** a new option into a poll
 	.patch((req, res) => {
+		console.log(req);
 		PollController.addNewOptionAndVote(res, req.params.id, req.body.votedFor);
 	})
 

@@ -18,12 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
-// app.use(express.static('client'));
-
-
-app.get('/', (req, res)=>{
-	res.send('HELLO THERE!');
-})
+app.use(express.static('client'));
 
 app.post('/api/authenticate', (req, res) => {
 	authenticate.encode(req, res);
@@ -33,10 +28,10 @@ app.use('/api', userRouter);
 
 app.use('/api', pollRouter);
 
-// app.get('*', function (req, res){
-//   res.sendFile(`${process.cwd()}/client/public/index.html`);
-//   console.log(process.cwd())
-// })
+app.get('*', function (req, res){
+	console.log(process.cwd())
+  res.sendFile(`${process.cwd()}/client/public/index.html`);
+})
 
 app.listen(port, (req, res)=>{
 	console.log(`Listening on port ${port}`);

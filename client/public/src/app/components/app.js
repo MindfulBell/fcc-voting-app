@@ -11,11 +11,12 @@ class App extends React.Component {
 		this.logoutUser = this.logoutUser.bind(this);
 	}
 
-	componentWillMount() {  
+	componentDidMount() {  
 		if (localStorage.hasOwnProperty('token') && localStorage.getItem('token') !== 'undefined') {
 			const token = localStorage.getItem('token');
 			this.props.loginFromStorage(token);
 		}
+		console.log('logging in')
 	}
 
 	logoutUser() {

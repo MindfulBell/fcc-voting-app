@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 import Chart from '../components/Chart';
 import AddOption from '../components/add-option';
-import { refreshPoll, emptyPoll, deletePoll, clearPollError } from '../actions/index';
+import { emptyPoll, deletePoll, clearPollError, voteOnPoll, getPoll, resetSuccess } from '../actions/index';
 
 class PollContainer extends Component {
 	constructor(props) {
@@ -15,18 +15,13 @@ class PollContainer extends Component {
 		this.handleDelete = this.handleDelete.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activePoll && _.isEmpty(nextProps.activePoll)) {
-			this.props.router.push(`/user/${this.props.user.id}`)
-		}
-	}
-
 	componentWillMount() {
 		// Set the active poll based on the params above
-		this.props.refreshPoll(this.props.params.pollId);
+		this.props.getPoll(this.props.params.pollId);
+	}
 
-		// If next props.options length > current props options length, then add a color to background color array?
-
+	shouldComponentUpdate(nextProps, nextState) {
+		return !nextProps.isLoading;
 	}
 
 	componentWillUnmount() {
@@ -36,15 +31,17 @@ class PollContainer extends Component {
 	}
 
 	processVote(pollId, votedFor) {
-		this.props.refreshPoll(pollId, votedFor);
+		this.props.voteOnPoll(pollId, votedFor);
 	}
 
 	addOption(value) {
-		this.props.refreshPoll(this.props.activePoll.id, value, true, this.props.user.auth.token);
+		console.log(value);
+		this.props.voteOnPoll(this.props.activePoll.id, value, true, this.props.user.auth.token);
 	}
 
 	handleDelete() {
-		this.props.deletePoll(this.props.activePoll.id, this.props.user.auth.token)
+		this.props.deletePoll(this.props.activePoll.id, this.props.user.auth.token);
+		this.props.router.push(`/user/${this.props.user.id}`);
 	}
 
 	render() {
@@ -78,16 +75,19 @@ const mapStateToProps = (state) => {
 		activePoll: state.polls.activePoll,
 		user: state.user,
 		errorMessage: state.polls.pollErrorMessage,
-		isLoading: state.loader.isLoading
+		isLoading: state.loader.isLoading,
+		deleteSuccess: state.polls.deleteSuccess
 	}
 }
 
 const mapDispatchToProps = (dispatch) => { 
 	return {
-			refreshPoll: (id, votedFor, newOption, token) => {dispatch(refreshPoll(id, votedFor, newOption, token))},
 			emptyPoll: () => { dispatch(emptyPoll()) },
-			deletePoll: (id, token) => { dispatch(deletePoll(id, token)) },
-			clearPollError: () => { dispatch(clearPollError()) }
+			deletePoll: (pollId, token) => { dispatch(deletePoll(pollId, token)) },
+			clearPollError: () => { dispatch(clearPollError()) },
+			voteOnPoll: (pollId, votedFor, newOption, token) => { dispatch(voteOnPoll(pollId, votedFor, newOption, token)) },
+			getPoll: (pollId) => { dispatch(getPoll(pollId)) },
+			resetSuccess: () => { dispatch(resetSuccess()) }
 		}
 	}
 

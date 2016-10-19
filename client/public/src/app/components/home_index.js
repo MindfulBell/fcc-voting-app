@@ -10,7 +10,8 @@ class HomeIndex extends Component {
 		super(props);
 	}	
 
-	componentWillMount() {
+	componentDidMount() {
+		// how do i make sure it refreshes polls when i navigate backwards?
 		this.props.getPolls();
 	}
 

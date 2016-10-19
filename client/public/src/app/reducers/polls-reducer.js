@@ -1,9 +1,10 @@
-import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, CLEAR_POLLS, CREATE_POLL_FAIL, CREATE_POLL_SUCCESS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL, CLEAR_POLL_ERROR } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, RESET_SUCCESS, CLEAR_POLLS, CREATE_POLL_FAIL, CREATE_POLL_SUCCESS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL, CLEAR_POLL_ERROR } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
 	activePoll: {},
-	pollErrorMessage: ''
+	pollErrorMessage: '',
+	deleteSuccess: false
 };
 
 export default function (state = INITIAL_POLLS_STATE, action) {
@@ -22,14 +23,15 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 			return Object.assign({}, state, { pollsList: [] });
 
 		case REFRESH_POLL: 
-			let activePoll = action.payload.data;
+			let activePoll = action.payload;
+			console.log(activePoll);
 			activePoll.id = activePoll._id;
 			delete activePoll._id;
 			return Object.assign({}, state, { activePoll });
 
 		case EMPTY_POLL:
 		case DELETE_POLL_SUCCESS:
-			return Object.assign({}, state, { activePoll: {}, pollErrorMessage: '' });
+			return Object.assign({}, state, { activePoll: {}, pollErrorMessage: '', deleteSuccess: true });
 		case CREATE_POLL_SUCCESS:
 			return Object.assign({}, state, { pollErrorMessage: '' })
 		case DELETE_POLL_FAIL:
@@ -38,6 +40,8 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 
 		case CLEAR_POLL_ERROR: 
 			return Object.assign({}, state, { pollErrorMessage: '' })
+		case RESET_SUCCESS: 
+			return Object.assign({}, state, { deleteSuccess: false })
 		default: 
 			return state;
 	}
