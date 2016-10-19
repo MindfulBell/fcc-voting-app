@@ -65,36 +65,35 @@ class NewPollForm extends Component {
 	for (let i=1; i<=this.state.options; i++) {
 		options.push(
 			<div className='poll-form-option' key={i}>
-				<label htmlFor={`${i}`}> Option #{`${i}`}</label>
-				<Field name={`${i}`} component='input' type='text'/>
+				<Field className='form-input'name={`${i}`} component='input' type='text' placeholder={`Option #${i}`}/>
 			</div>
 		)
 	}
 
 		return (
 			<div className='main'>
-				<form onSubmit={handleSubmit(this.submitPoll)}>
-					<div className='poll-form-title'>
-						<label htmlFor='title'> Name Your Poll... </label>
-						<Field name='title' component='input' type='text'/>
-					</div>
-					<div className='new-options-container'>
-						{options}
-					</div>
-					<div className='button' onClick={this.addOptionField}>Add option...</div>
-					{ loader.isLoading ? 
-						<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
-						: <button type='submit' disabled={pristine}> Submit Poll </button>
-					}
-					<div className='message'>
-					{ this.props.errorMessage ?
-						<span>{this.props.errorMessage}</span> : null
-					}
-					</div>
-					<div className='message'>
-						{ this.state.validateError ? <span>{this.state.validateError}</span> : null}
-					</div>
-				</form>
+			<h1 className='title'> Create a Poll </h1>
+				<div className='new-poll-form'>
+					<form onSubmit={handleSubmit(this.submitPoll)}>
+						<Field className='form-input poll-title' name='title' component='input' type='text' placeholder='Title'/>
+						<div className='new-options-container'>
+							{options}
+						</div>
+						<button onClick={this.addOptionField}><i className="fa fa-plus fa-2x" aria-hidden="true"></i></button>
+						{ loader.isLoading ? 
+							<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
+							: <button type='submit' disabled={pristine}> <i className="fa fa-check fa-2x" aria-hidden="true"></i> </button>
+						}
+						<div className='message'>
+						{ this.props.errorMessage ?
+							<span>{this.props.errorMessage}</span> : null
+						}
+						</div>
+						<div className='message'>
+							{ this.state.validateError ? <span>{this.state.validateError}</span> : null}
+						</div>
+					</form>
+				</div>
 			</div>
 		)
 	}

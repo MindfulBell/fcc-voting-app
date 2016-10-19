@@ -12,9 +12,7 @@ import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 require("!style!css!sass!../css/main.scss");
 
 const routingMiddleware = routerMiddleware(browserHistory);
-
 const store = createStore(reducers, applyMiddleware(promise, thunk, routingMiddleware))
-
 const history = syncHistoryWithStore(browserHistory, store);
 
 render(

@@ -38,14 +38,14 @@ render() {
 				<a className="twitter-share-button" 
 					 href={twitterLink} 
 					 target="#blank">
-					Tweet 
+					<i className="fa fa-twitter-square fa-4x" aria-hidden="true"></i> 
 				</a>
 					{
 						this.props.isLoading ? 
 						<i className="fa fa-spinner fa-2x loading" aria-hidden="true">
 						</i>
 						:
-						<div className='delete' onClick={this.handleDelete}> 
+						<div className='delete button' onClick={this.handleDelete}> 
 							Delete this poll!
 						</div>
 					}

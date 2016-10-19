@@ -29,7 +29,6 @@ app.use('/api', userRouter);
 app.use('/api', pollRouter);
 
 app.get('*', function (req, res){
-	console.log(process.cwd())
   res.sendFile(`${process.cwd()}/client/public/index.html`);
 })
 

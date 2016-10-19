@@ -265,10 +265,10 @@ a {
 	margin: 100px auto 0 auto;
   padding: 0 5px 35px 5px;
   text-align: center;
-  border: 5px solid #6A8EAE;
+  border: 2px solid #6A8EAE;
   border-radius: 60px;
   max-width: 320px;
-  box-shadow: 0px 0px 12px #686c66;
+  box-shadow: 0px 0px 4px #686c66;
   background-color: #fff;
   font-family: $formfont;
   .login-form {
@@ -291,19 +291,23 @@ a {
 .form-input {
 	font-size: 20px;
   width: 200px;
-  height: 45px;
+  height: 55px;
   border: none;
-  border-bottom: 1.5px solid $medgreen;
+  border-bottom: 2px solid $medblue;
   background-color: transparent;
   text-align: center;
   margin-top: 15px;
   font-family: $formfont;
+  @include prefix(transition, (background-color .3s, border-radius .3s, color .3s), webkit ms moz o);
   &:focus {
   	outline: none;
+  	background-color: $medblue;
+  	border-radius: 8px;
+  	color: #FFF;
   }
 }
 
-.login-user button, .add-option-container button {
+.login-user button, .add-option-container button, .new-poll-form button {
 	cursor: pointer;
   margin: 18px 0 10px 0;
   width: 75px;
@@ -312,6 +316,7 @@ a {
   height: 50px;
   border: 2px solid $medblue;
   color: $medblue;
+  @include prefix(transition, (width .3s, background-color .3s, color .3s), webkit ms moz o); 
   &:hover {
   	background-color: $medblue;
   	color: white;
@@ -322,7 +327,6 @@ a {
 }
 
 .login-user button {
-	@include prefix(transition, (width .3s, background-color .3s, color .3s), webkit ms moz o); 
   &:hover {
   	width: 150px;
   	background-color: $medblue;
@@ -333,25 +337,65 @@ a {
   }
 }
 
-.add-option-container button {
-	color: $medgreen;
-	border-color: $medgreen;
-	font-weight: bold;
-	width: 250px;
-	@include prefix(transition, (background-color .3s, color .3s), webkit ms moz o); 
-	font-family: $font;
-	display: block;
-	margin: 15px auto;
-	background-color: transparent;
-	&:hover {
-		color: $background;
-		background-color: $medgreen;
+
+.add-option-container {
+	button {
+		color: $medgreen;
+		border-color: $medgreen;
+		font-weight: bold;
+		width: 250px;
+		font-family: $font;
+		display: block;
+		margin: 15px auto;
+		background-color: transparent;
+		&:hover {
+			color: $background;
+			background-color: $medgreen;
+		}
+	}
+}
+
+.active-user-options {
+	width: 200px;
+	margin: 0 auto;
+	text-align: center;
+	a {
+		color: #1B95E0;
+	}
+}
+
+.new-option-form .form-input {
+	border-radius: 16px;
+	&:focus {
+		background-color: $lightgreen;
+		color: #fff;		
 	}
 }
 
 .loading {
-	color: #57A773;
+	color: $medblue;
 	animation: spin 1s linear infinite;
+}
+
+/* NEW POLL FORM */
+
+.new-poll-form {
+	width: 40%;
+	margin: 0 auto;
+	.poll-title {
+		font-size: 30px;
+		width: 300px;
+	}
+	.new-options-container {
+		margin: 25px auto 45px auto;
+	}
+	button {
+		display: block;
+		margin: 45px auto 10px;
+		&:nth-of-type(1) {
+			margin-top: -25px;
+		}
+	}
 }
 
 

@@ -3,14 +3,11 @@ import Chart, { Pie } from 'react-chartjs-2';
 
 
 export default (props) => {
-	let tweet = `Come vote on my sweet poll! ${props.title} ${window.location.href}`,
-			twitterLink = `https://twitter.com/intent/tweet?text=${tweet}`,
-			choices = [],
+	let	choices = [],
 		  labels = [],
 		  votes = [],
 		  backgroundColor = [];
 
-		  // ONLY GET NEW COLORS WHEN PROCESSING A VOTE!!! HOW?!
 	if (props.options) {
 		props.options.forEach((option, ind, arr)=>{
 
