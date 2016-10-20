@@ -21,7 +21,6 @@ class ProfileContainer extends Component {
 		return (
 			<div className='main'>
 				<h1 className='title'> Your polls </h1>
-				<h3 className='subtitle'> <i>What will you ask today?</i> </h3>
 				<PollsList pollsList={this.props.pollsList} />
 			</div>
 		)

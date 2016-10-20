@@ -172,7 +172,7 @@ export function loginFromStorage(token) {
 				dispatch(loginUser(user))
 			})
 			.catch((e) => {
-				dispatch(userLoginError(e))
+				console.log('Token may have expired')
 		})
 	}
 }

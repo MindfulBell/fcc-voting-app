@@ -73,6 +73,7 @@ class NewPollForm extends Component {
 		return (
 			<div className='main'>
 			<h1 className='title'> Create a Poll </h1>
+			<h2 className='subtitle'> What will you ask today? </h2>
 				<div className='new-poll-form'>
 					<form onSubmit={handleSubmit(this.submitPoll)}>
 						<Field className='form-input poll-title' name='title' component='input' type='text' placeholder='Title'/>

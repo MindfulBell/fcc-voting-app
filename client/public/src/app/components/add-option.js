@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export default class AddOption extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			value: ''
+			value: '',
+			emptySubmit: false,
+			errorMessage: '' 
 		}
 
 		this.handleDelete = this.handleDelete.bind(this);
 		this.addOption = this.addOption.bind(this);
 		this.updateValue = this.updateValue.bind(this);
+		this.checkForRepeats = this.checkForRepeats.bind(this);
 	}
+
+componentWillReceiveProps(nextProps) {
+	if (nextProps.errorMessage !== '') {
+		this.setState({ errorMessage: nextProps.errorMessage })
+	}
+}
 
 handleDelete() {
 	this.props.handleDelete();
@@ -20,40 +30,59 @@ handleDelete() {
 
 addOption(e) {
 	e.preventDefault();
-	this.props.addOption(this.state.value);
-	this.setState({value: ''})
+	if (this.checkForRepeats(this.state.value, this.props.activePoll.options)) {
+		this.setState({
+			errorMessage: 'Option already exists!'
+		})
+	}
+	else if (this.state.value === '') {
+		this.setState({ emptySubmit: true })
+	}
+	else {
+		this.props.addOption(this.state.value);
+		this.setState({value: '', errorMessage: ''});	
+	}
 }
 
 updateValue(value) {
 	this.setState({
-		value
+		value,
+		emptySubmit: false
 	});
+}
+
+checkForRepeats(value, arr) {
+	const lowerCaseArr = arr.map((val) => val.optionName.toString().toLowerCase())
+	console.log(value, lowerCaseArr)
+	return lowerCaseArr.includes(value.toLowerCase());
 }
 					
 render() {
-	const tweet = `Come vote on my sweet poll! ${this.props.title} ${window.location.href}`,
+	const fadeInTransition = {
+			transitionAppear: true,
+			transitionAppearTimeout: 2500,
+			transitionEnter: false,
+			transitionLeave: false
+		},
+		tweet = `Come vote on my sweet poll! ${this.props.title} ${window.location.href}`,
 		twitterLink = `https://twitter.com/intent/tweet?text=${tweet}`,
 		activeUserOptions = 
 			<div className='active-user-options'>
-				<a className="twitter-share-button" 
-					 href={twitterLink} 
-					 target="#blank">
-					<i className="fa fa-twitter-square fa-4x" aria-hidden="true"></i> 
-				</a>
+				<div className='twitter-share-button'>
+					<a href={twitterLink} 
+						 target="#blank">
+						<i className="fa fa-twitter fa-3x" aria-hidden="true"></i> 
+					</a>
+				</div>
 					{
 						this.props.isLoading ? 
 						<i className="fa fa-spinner fa-2x loading" aria-hidden="true">
 						</i>
 						:
 						<div className='delete button' onClick={this.handleDelete}> 
-							Delete this poll!
+							<i className="fa fa-times fa-3x" aria-hidden="true"></i>
 						</div>
 					}
-				<div className='message'>
-					{
-						this.props.errorMessage ? <span>{this.props.errorMessage}</span> : null
-					}
-				</div>
 			</div>;
 
 	return (
@@ -63,7 +92,7 @@ render() {
 					{ this.props.loggedIn ? 
 						<form className='new-option-form' onSubmit={(e) => {this.addOption(e)}}> 
 							<input 
-								className='form-input'
+								className={this.state.emptySubmit ? 'form-input danger' : 'form-input'}
 								type='text' 
 								placeholder='New option...' 
 								value={this.state.value}
@@ -73,6 +102,17 @@ render() {
 						</form> :
 						<div> Don't like the choices? <Link to={`/user/login`}><span className='login-link'>Login</span></Link> to create a new option! </div> 
 					}
+				<div className='message'>
+					{
+						this.state.errorMessage.length > 0 ? 
+						<ReactCSSTransitionGroup transitionName='fade' {...fadeInTransition}>
+							<span>
+								{this.state.errorMessage}
+							</span> 
+						</ReactCSSTransitionGroup>
+							: null
+					}
+				</div>
 			</div>
 				{ this.props.createdByActiveUser ? activeUserOptions :	null }
 		</div>

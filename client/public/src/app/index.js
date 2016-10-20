@@ -1,3 +1,5 @@
+require("!style!css!sass!../css/main.scss");
+
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -8,8 +10,6 @@ import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
-
-require("!style!css!sass!../css/main.scss");
 
 const routingMiddleware = routerMiddleware(browserHistory);
 const store = createStore(reducers, applyMiddleware(promise, thunk, routingMiddleware))

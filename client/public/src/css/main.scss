@@ -103,15 +103,15 @@ a {
 	.title {
 		margin: 75px 0 0 0;
 		font-size: 6em;
-		color: #FFF;
-		text-shadow: 0px 0px 6px black;
+		color: white;
+		text-shadow: 0 1px 0 black;
 	}
 	.subtitle {
 		margin: 0 0 65px 0;
-		color: #FFF;
-		text-shadow: 0px 0px 12px black;
+		color: white;
 		padding-top: 5px;
-		font-size: 1.5em;
+		font-size: 1.8em;
+		text-shadow: 0 0 1px black;
 	}
 }
 
@@ -197,7 +197,7 @@ a {
 // CHART
 
 .chart-holder {
-	margin: 100px auto;
+	margin: 100px auto 25px;
 	max-width: 600px;
 	.title {
 		font-size: 2.5em;
@@ -232,15 +232,18 @@ a {
 	    	color: $background;
 	    	transform: rotate(10deg);
 	    }
-
 		}
 	}
 }
 
 .add-option-container {
 	font-size: 20px;
-	margin-top: 35px;
+	margin: 25px auto;
 	text-align: center;
+	h4 {
+		color: $medblue;
+		margin-bottom: -10px;
+	}
 	input {
 		width: 145px;
 		font-family: $font;
@@ -353,22 +356,87 @@ a {
 			background-color: $medgreen;
 		}
 	}
-}
-
-.active-user-options {
-	width: 200px;
-	margin: 0 auto;
-	text-align: center;
-	a {
-		color: #1B95E0;
+	.danger {
+		border-color: #AD3434;
+		animation: shake .4s linear 1;
+	}
+	.message {
+		color: #AD3434;
+		display: inline-block;
+		padding: 5px 10px;
+		font-size: 14px;
+		margin-bottom: 15px;
 	}
 }
 
-.new-option-form .form-input {
-	border-radius: 16px;
-	&:focus {
-		background-color: $lightgreen;
-		color: #fff;		
+.active-user-options {
+	display: flex;
+	justify-content: center;
+	width: 200px;
+	margin: 0 auto 20px;
+	.fa {
+		padding: 5px 10px;
+		border: 2px solid $medblue;
+		@include prefix(transition, padding .5s, webkit ms moz o);
+		&:after {
+			opacity: 0;
+			display: inline-block;
+			width: 100px;
+			max-width: 0px;
+			font-size: 24px;
+	    font-family: "Poppins", sans-serif;   
+	    position: relative;
+	    left: -50px;
+	    bottom: 8px;
+			@include prefix(transition, (max-width .5s, opacity 0s), webkit ms moz o);
+		}
+		&:hover::after {
+			opacity: 1;
+	    left: 29px;
+	    max-width: 100px;
+			@include prefix(transition, (max-width .5s, opacity 1.5s), webkit ms moz o);
+		}
+	}
+	.twitter-share-button {
+		text-align: center;
+		.fa-twitter {
+			border-top-left-radius: 12px;
+			border-bottom-left-radius: 12px;
+			color: #1B95E0;
+			text-align: center;
+			&:hover {
+				padding-right: 80px;
+			}
+			&:after {
+				content: 'Tweet';
+			}
+		}	
+	}
+	.delete.button {
+		text-align: center;
+		cursor: pointer;
+		.fa-times {
+			border-top-right-radius: 12px;
+			border-bottom-right-radius: 12px;
+			border-left: none;
+			color: maroon;
+			&:hover {
+				padding-right: 80px;
+			}
+			&:after {
+				content: 'Delete';
+			}
+		}
+	}
+}
+
+.new-option-form {
+	.form-input {
+		border-radius: 16px;
+		&:focus {
+			background-color: $lightgreen;
+			color: #fff;		
+		}
 	}
 }
 
@@ -435,4 +503,15 @@ a {
 @keyframes slideUp {
 	0% { margin-top: 50px; }
 	100% { margin-top: 0px;}
+}
+
+@keyframes shake {
+	25% {margin-left: 10px;}
+	35% {margin-left: 0px;}
+	45% {margin-left: -10px;}
+	55% {margin-left: 0px;}
+	65% {margin-left: 10px;}
+	75% {margin-left: 0px;}
+	85% {margin-left: -10px;}
+	100% {margin-left: 0px;}
 }

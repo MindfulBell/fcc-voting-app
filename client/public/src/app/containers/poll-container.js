@@ -63,6 +63,7 @@ class PollContainer extends Component {
 					isLoading={this.props.isLoading}
 					addOption={this.addOption}
 					errorMessage={this.props.errorMessage}
+					activePoll={this.props.activePoll}
 				/>
 			</div>
 		)
