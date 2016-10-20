@@ -79,13 +79,14 @@ export function clearPolls() {
 
 export function createNewPoll(pollWithToken){
 	// request to make a poll and add it to database 
+	console.log(pollWithToken);
 	return (dispatch) => {
 		dispatch(showLoader());
 
 		return makeAxiosRequest('post', `${ROOT_API}/polls`, pollWithToken)
 			.then((response) => {
 				console.log('succeeded');
-				dispatch(refreshPoll(response.data._id));
+				dispatch(refreshPoll(response.data));
 				dispatch(hideLoader());
 				dispatch(createPollSuccess());
 			})

@@ -28,6 +28,7 @@ pollRouter.use((req, res, next) => {
 
 // **POST** a new poll 
 pollRouter.post('/polls', (req, res) => {
+	console.log(req.body);
 	const newPoll = Object.assign({}, req.body.poll)
 	PollController.createPoll(newPoll, res);
 })

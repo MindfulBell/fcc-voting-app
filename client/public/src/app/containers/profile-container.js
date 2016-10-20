@@ -43,6 +43,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-//WEIRD BUG HERE...
-
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileContainer);
