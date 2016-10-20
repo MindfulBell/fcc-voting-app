@@ -80,16 +80,11 @@ class NewPollForm extends Component {
 						<div className='new-options-container'>
 							{options}
 						</div>
-						<button onClick={this.addOptionField}><i className="fa fa-plus fa-2x" aria-hidden="true"></i></button>
+						<div className='add-option' onClick={this.addOptionField}><i className="fa fa-plus fa-2x" aria-hidden="true"></i></div>
 						{ loader.isLoading ? 
 							<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
 							: <button type='submit' disabled={pristine}> <i className="fa fa-check fa-2x" aria-hidden="true"></i> </button>
 						}
-						<div className='message'>
-						{ this.props.errorMessage ?
-							<span>{this.props.errorMessage}</span> : null
-						}
-						</div>
 						<div className='message'>
 							{ this.state.validateError ? <span>{this.state.validateError}</span> : null}
 						</div>

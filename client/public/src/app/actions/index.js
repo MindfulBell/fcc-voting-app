@@ -38,8 +38,8 @@ export function voteOnPoll(pollId, votedFor, newOption = false, token = null){
 		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
 		makeAxiosRequest('patch', url, {votedFor, token})
 			.then((response) => {
-				dispatch(hideLoader());
 				dispatch(refreshPoll(response.data));
+				dispatch(hideLoader());
 			})
 			.catch((e) => {
 				console.log(e);
@@ -258,6 +258,7 @@ export function clearCreateError() {
 
 export const SHOW_LOADER = 'SHOW_LOADER';
 function showLoader() {
+	console.log('showing')
 	return {
 		type: SHOW_LOADER
 	}
@@ -265,6 +266,7 @@ function showLoader() {
 
 export const HIDE_LOADER = 'HIDE_LOADER';
 function hideLoader() {
+	console.log('hiding')
 	return {
 		type: HIDE_LOADER
 	}

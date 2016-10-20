@@ -3,6 +3,7 @@ import Chart, { Pie } from 'react-chartjs-2';
 
 
 export default (props) => {
+	console.log(props.isLoading);
 	let	choices = [],
 		  labels = [],
 		  votes = [],
@@ -45,7 +46,7 @@ export default (props) => {
 				responsive: true
 			}}/>
 			<div className='choices-container'>
-				{choices}
+				{props.isLoading ? 'LOADING' : choices}
 			</div>
 		</div>
 	)

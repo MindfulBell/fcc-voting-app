@@ -35,7 +35,6 @@ class PollContainer extends Component {
 	}
 
 	addOption(value) {
-		console.log(value);
 		this.props.voteOnPoll(this.props.activePoll.id, value, true, this.props.user.auth.token);
 	}
 
@@ -45,6 +44,7 @@ class PollContainer extends Component {
 	}
 
 	render() {
+		console.log(this.props.isLoading);
 		return(
 			<div>
 				<Chart
