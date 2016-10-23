@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router';
 
-import { loginFromStorage, logoutUser } from '../actions/index';
+import { loginFromStorage, logoutUser, getUserIp } from '../actions/index';
 
 class App extends React.Component {
 	constructor(props) {
@@ -17,6 +17,7 @@ class App extends React.Component {
 			const token = localStorage.getItem('token');
 			this.props.loginFromStorage(token);
 		}
+		this.props.getUserIp();
 	}
 
 	logoutUser() {
@@ -29,12 +30,12 @@ class App extends React.Component {
 		const loggedInNav = 
 			<div className='right-links'>
 				<Link to={`/user/${this.props.user.id}`}>
-					<li className='link link-icon'> <i className="fa fa-cogs fa-2x" aria-hidden="true"></i> </li>
+					<li className='link link-icon'> <i className="fa fa-cogs fa-3x" aria-hidden="true"></i> </li>
 				</Link>
 				<Link to={`/polls/new`}>
-					<li className='link link-icon'> <i className="fa fa-pencil fa-2x" aria-hidden="true"></i> </li>
+					<li className='link link-icon'> <i className="fa fa-pencil fa-3x" aria-hidden="true"></i> </li>
 				</Link>
-				<li className='link' onClick={this.logoutUser}>	<i className="fa fa-sign-out fa-2x" aria-hidden="true"></i> </li>
+				<li className='link link-icon' onClick={this.logoutUser}>	<i className="fa fa-sign-out fa-3x" aria-hidden="true"></i> </li>
 				<li className='link greeting'> Hi, {this.props.user.username} </li>
 			</div>
 
@@ -43,13 +44,13 @@ class App extends React.Component {
 				<div className='navbar-container'>
 					<ul className='navbar'>
 						<Link to='/'>
-							<li className='link link-icon' id="home"> <i className="fa fa-home fa-2x" aria-hidden="true"> </i> </li>
+							<li className='link link-icon' id="home"> <i className="fa fa-home fa-3x" aria-hidden="true"> </i> </li>
 						</Link>
 					{ this.props.user.loggedIn ? 
 								loggedInNav :
 						<div className='right-links'> 
 							<Link to='/user/login'>
-								<li className='link link-icon'> <i className="fa fa-sign-in fa-2x" aria-hidden="true"></i> </li>
+								<li className='link link-icon'> <i className="fa fa-sign-in fa-3x" aria-hidden="true"></i> </li>
 							</Link>
 							<Link to='/user/new'>
 								<li className='link'> Register </li>
@@ -75,7 +76,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		loginFromStorage: (token) => { dispatch(loginFromStorage(token)) },
-		logoutUser: () => { dispatch(logoutUser()) }
+		logoutUser: () => { dispatch(logoutUser()) },
+		getUserIp: () => { dispatch(getUserIp()) }
 	}
 }
 

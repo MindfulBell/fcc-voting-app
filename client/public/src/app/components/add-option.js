@@ -53,20 +53,14 @@ updateValue(value) {
 
 checkForRepeats(value, arr) {
 	const lowerCaseArr = arr.map((val) => val.optionName.toString().toLowerCase())
-	console.log(value, lowerCaseArr)
 	return lowerCaseArr.includes(value.toLowerCase());
 }
 					
 render() {
-	const fadeInTransition = {
-			transitionAppear: true,
-			transitionAppearTimeout: 2500,
-			transitionEnter: false,
-			transitionLeave: false
-		},
-		tweet = `Come vote on my sweet poll! ${this.props.title} ${window.location.href}`,
-		twitterLink = `https://twitter.com/intent/tweet?text=${tweet}`,
-		activeUserOptions = 
+	
+	const tweet = `Come vote on my sweet poll! ${this.props.title} ${window.location.href}`,
+				twitterLink = `https://twitter.com/intent/tweet?text=${tweet}`,
+				activeUserOptions = 
 			<div className='active-user-options'>
 				<div className='twitter-share-button'>
 					<a href={twitterLink} 
@@ -86,10 +80,19 @@ render() {
 			</div>;
 
 	return (
+
 		<div>
-			<div className='add-option-container'>
-				<h4> Add an option! </h4>
+			{ this.props.alreadyVoted ? 
+				<ReactCSSTransitionGroup {...this.props.fadeTransition}>
+					<div className='already-voted'>
+						Thanks for Voting!
+					</div>
+				</ReactCSSTransitionGroup>
+				: 
+				<div className='add-option-container'>
 					{ this.props.loggedIn ? 
+						<div>
+						<h4> Add an option! </h4>
 						<form className='new-option-form' onSubmit={(e) => {this.addOption(e)}}> 
 							<input 
 								className={this.state.emptySubmit ? 'form-input danger' : 'form-input'}
@@ -99,21 +102,21 @@ render() {
 								onChange={(e) => {this.updateValue(e.target.value)}}
 							/>
 							<button type='submit'> Add option and vote </button>
-						</form> :
-						<div> Don't like the choices? <Link to={`/user/login`}><span className='login-link'>Login</span></Link> to create a new option! </div> 
+						</form>
+						</div> :
+						<div className='not-loggedIn-message'> Don't like the choices? <Link to={`/user/login`}><span className='login-link'>Login</span></Link> to create a new option! </div> 
 					}
-				<div className='message'>
-					{
-						this.state.errorMessage.length > 0 ? 
-						<ReactCSSTransitionGroup transitionName='fade' {...fadeInTransition}>
-							<span>
-								{this.state.errorMessage}
-							</span> 
-						</ReactCSSTransitionGroup>
-							: null
-					}
+					<div className='message'>
+						{
+							this.state.errorMessage.length > 0 ? 
+								<span>
+									{this.state.errorMessage}
+								</span> 
+								: " "
+						}
+					</div>
 				</div>
-			</div>
+			}
 				{ this.props.createdByActiveUser ? activeUserOptions :	null }
 		</div>
 	)

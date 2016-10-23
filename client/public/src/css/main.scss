@@ -52,7 +52,7 @@ a {
 	background-color: $medblue;
 	position: fixed;
 	width: 100%;
-	height: 60px;
+	height: 90px;
 	top: 0;
 	left: 0;
 	margin: 0;
@@ -62,16 +62,17 @@ a {
 
 
 .right-links {
-	margin-right: 15px;
+	margin-right: 25px;
 }
 	.link {
 		@include prefix(transition, (color .2s), webkit ms moz o);
 		float: right;
 		display: inline-block;
 		color: #fff;
-		padding: 16px 20px 6px 10px;
+		padding: 30px 25px 6px 10px;
 		text-align: center;
 		text-shadow: 0px 0px 4px black;
+		font-size: 1.2em;
 		&:hover {
 			color: $lightblue;
 		}
@@ -79,16 +80,17 @@ a {
 	}
 
 	.link-icon {
-		padding-top: 14px;
+		padding-top: 20px;
+		font-size: 1em;
 	}
 
 	#home {
 		float: left;
-		padding: 15px 0 0 20px;
+		padding: 20px 0 0 20px;
 	}
 	.greeting {
 		cursor: default;
-		padding-top: 20px;
+		padding-top: 30px;
 		&:hover {
 			color: #fff;
 		}
@@ -123,24 +125,41 @@ a {
 	background-repeat: no-repeat;
 	box-shadow: 0px 0px 12px 3px black;
 	background-position: 50% 50%;
+	background-attachment: fixed;
 	.title {
 		padding-top: 300px;
+		font-size: 8em;
+		text-shadow: 2px 2px 6px black;
 	}
 	.title::after {
 		content: '';
-		width: 500px;
-		height: 3px;
+		width: 800px;
+		height: 2px;
 		display: block;
-		background-color: #FFF;
+		background-color: $lightblue;
 		position: relative;
 		top: -30px;
 		margin: 0 auto;
+		box-shadow: 2px 2px 3px black;
 	}
 	.title::first-letter {
 		color: #9BD1E5;
 	}
 	.n {
 		color: #57A773;
+	}
+	.subtitle {
+		text-shadow: 1px 2px 2px black;
+	}
+	.fa-arrow-down {
+		color: #fff;
+		text-shadow: 0px 0px 2px black;
+		display: block;
+		position: relative;
+		top: 20vh;
+		margin: 0 auto;
+	  animation: appear 4.3s linear .1s 1;
+	  transition: opacity .5s linear;
 	}
 }
 
@@ -151,45 +170,39 @@ a {
 // POLL LINKS
 
 .poll-list {
-	width: 90%;
+	max-width: 50%;
 	margin: 0 auto;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	a {
-		height: 150px;
-	}
+	width: 100%;
 	.poll-link {
 		height: 150px;
-		width: 250px;
-		margin: 3px;
-		box-shadow: 0px 0px 1px black;
+		margin: 3px auto;
 		color: white;
-		@include prefix(transition, (transform .2s, box-shadow .3s), webkit ms moz o);
-		background: url('../assetts/img/survey.jpg');
-		background-size: cover;
-		background-position: 50% 50%;
-		background-repeat: no-repeat;
-		box-shadow: inset 0px 0px 12px black;
+		@include prefix(transition, (border-radius .2s, background-color .2s, box-shadow .1s), webkit ms moz o);
+		background: transparent;
+		border: 2px solid $medblue;
+		display: flex;
+		justify-content: space-around;
 		&:hover {
-			transform: scale(1.2);
-			z-index: 1;
-			box-shadow: 0px 0px 6px black;
-		}
-
-		&:hover h3 {
+			background-color: $medblue;
+			border-radius: 40px;
+			h3 {
 				white-space: normal;
 				overflow: auto;
+				color: $lightblue;
 			}
-
-		h3 {
-			padding: 25px 3px 3px 0px;
-			text-shadow: 0px 2px 3px black;
-			margin: 0 auto;
+		}
+		.pie {
+			margin: 20px 5px 0px 40px;
+			font-size: 1.4em;
+			text-shadow: 0px 0px 6px white;
+		}
+		.poll-name {
+			font-size: 1.2em;
+			color: $medblue;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			max-width: 250px;
-			white-space: nowrap;
+			flex-grow: 2;
+			margin-top: 18px;
 		}
 	}
 }
@@ -197,12 +210,17 @@ a {
 // CHART
 
 .chart-holder {
-	margin: 100px auto 25px;
+	margin: 150px auto 25px;
 	max-width: 600px;
 	.title {
-		font-size: 2.5em;
+		font-size: 3em;
 		margin-bottom: 10px;
 		line-height: 47px;
+		color: #fff;
+		text-shadow: -1px 1px 5px black;
+		&::first-letter {
+			color: $lightblue;
+		}
 	}
 	.choices-container {
 		margin-top: 25px;
@@ -240,6 +258,9 @@ a {
 	font-size: 20px;
 	margin: 25px auto;
 	text-align: center;
+	.not-loggedIn-message {
+		margin-top: 20px;
+	}
 	h4 {
 		color: $medblue;
 		margin-bottom: -10px;
@@ -254,6 +275,15 @@ a {
 	}
 }
 
+.already-voted {
+	text-align: center;
+	margin: 0 auto;
+	font-size: 1.8em;
+	color: $medblue;
+	text-shadow: 0 0 1px black;
+	margin-bottom: 35px;
+}
+
 .login-link {
 	color: $medblue;
 }
@@ -265,7 +295,7 @@ a {
 /* LOGIN/REGISTER USER */
 
 .login-user {
-	margin: 100px auto 0 auto;
+	margin: 150px auto 0 auto;
   padding: 0 5px 35px 5px;
   text-align: center;
   border: 2px solid #6A8EAE;
@@ -312,7 +342,7 @@ a {
 
 .login-user button, .add-option-container button, .new-poll-form button, .new-poll-form .add-option {
 	cursor: pointer;
-  margin: 18px 0 10px 0;
+  margin: 18px auto 10px auto;
   width: 75px;
   border-radius: 20px;
   background-color: white;
@@ -327,6 +357,14 @@ a {
   &:focus {
   	outline: none;
   }
+}
+
+.new-poll-form .add-option {
+	margin: -25px auto 75px;
+	height: 44px;
+	i {
+		margin-top: 7px;
+	}
 }
 
 .login-user button {
@@ -355,10 +393,6 @@ a {
 			color: $background;
 			background-color: $medgreen;
 		}
-	}
-	.danger {
-		border-color: #AD3434;
-		animation: shake .4s linear 1;
 	}
 	.message {
 		color: #AD3434;
@@ -447,33 +481,94 @@ a {
 
 /* NEW POLL FORM */
 
-.new-poll-form {
-	width: 40%;
-	margin: 0 auto;
-	.poll-title {
-		font-size: 30px;
-		width: 300px;
+.new-poll {
+	margin-top: 150px;
+	.title {
+		color: #fff;
+		text-shadow: -2px 1px 6px black;
+		&::first-letter {
+			color: $lightblue;
+		}
+		.t {
+			color: $lightgreen;
+		}
+		.p {
+			color: $medblue;
+		}
 	}
-	.new-options-container {
-		margin: 25px auto 45px auto;
-	}
-	button {
+	.title:after {
+		content: '';
+		width: 800px;
+		background-color: $medblue;
+		height: 1px;
+		position: relative;
 		display: block;
-		margin: 45px auto 10px;
-		&:nth-of-type(1) {
-			margin-top: -25px;
+		margin: 0 auto;
+		top: -20px;
+	}
+	.subtitle {
+		color: #fff;
+		margin-top: -20px;
+		font-size: 1.9em;
+		text-shadow: -2px 1px 5px black;
+	}
+	.new-poll-form {
+		width: 40%;
+		margin: 0 auto;
+		.poll-title {
+			font-size: 30px;
+			width: 300px;
+		}
+		.new-options-container {
+			margin: 25px auto 45px auto;
+		}
+		button {
+			display: block;
+			margin: 45px auto 10px;
+			&:nth-of-type(1) {
+				margin-top: -25px;
+			}
 		}
 	}
 }
 
 
+.profile {
+	margin-top: 150px;
+	.title {
+		color: #fff;
+		text-shadow: -2px 1px 6px black;
+		&::first-letter {
+			color: $lightblue;
+		}
+		.u {
+			color: $lightgreen;
+		}
+		.s {
+			color: $medblue;
+		}
+	}
+}
+
+	.danger {
+		border-color: #AD3434;
+		animation: shake .4s linear 1;
+		color: maroon;
+	}
+
+	.large-loading {
+		text-align: center;
+		margin: 400px auto;
+	}
+
+
 /* ANIMATIONS */
 
-.fade-appear {
+.fade-appear, .fade-enter {
 	opacity: 0.01;
 	@include prefix(transition, (opacity 2500ms), webkit ms moz o);
 }
-.fade-appear.fade-appear-active {
+.fade-appear.fade-appear-active, .fade-enter.fade-enter-active {
 	opacity: 1;
 }
 
@@ -514,4 +609,10 @@ a {
 	75% {margin-left: 0px;}
 	85% {margin-left: -10px;}
 	100% {margin-left: 0px;}
+}
+
+@keyframes appear {
+	0% { opacity: 0; }
+	60% { opacity: 0; }
+	100% { opacity: 1; }
 }

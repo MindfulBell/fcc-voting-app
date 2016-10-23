@@ -19,8 +19,8 @@ class ProfileContainer extends Component {
 
 	render() {
 		return (
-			<div className='main'>
-				<h1 className='title'> Your polls </h1>
+			<div className='main profile'>
+				<h1 className='title'> Yo<span className='u'>u</span>r poll<span className='s'>s</span> </h1>
 				<PollsList pollsList={this.props.pollsList} />
 			</div>
 		)

@@ -1,4 +1,4 @@
-import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, RESET_SUCCESS, CLEAR_POLLS, CREATE_POLL_FAIL, CREATE_POLL_SUCCESS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL, CLEAR_POLL_ERROR } from '../actions/index';
+import { GET_POLLS, REFRESH_POLL, EMPTY_POLL, GET_USER_POLLS, ALREADY_VOTED, RESET_SUCCESS, CLEAR_POLLS, CREATE_POLL_FAIL, CREATE_POLL_SUCCESS, DELETE_POLL_SUCCESS, DELETE_POLL_FAIL, CLEAR_POLL_ERROR } from '../actions/index';
 
 const INITIAL_POLLS_STATE = {
 	pollsList: [],
@@ -21,7 +21,8 @@ export default function (state = INITIAL_POLLS_STATE, action) {
 
 		case CLEAR_POLLS:
 			return Object.assign({}, state, { pollsList: [] });
-
+		case ALREADY_VOTED:
+			return Object.assign({}, state, { activePoll: { alreadyVoted: true } }, { pollErrorMessage: 'Can only vote once!'});
 		case REFRESH_POLL: 
 			let activePoll = action.payload;
 			activePoll.id = activePoll._id;

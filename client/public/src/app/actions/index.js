@@ -8,6 +8,7 @@ const USER_API = '/users';
 
 export const GET_POLLS = 'GET_POLLS';
 export function getPolls() {
+	console.log('getting polls')
 	const payload = makeAxiosRequest('get',`${ROOT_API}/polls`);
 	return {
 		type: GET_POLLS,
@@ -32,11 +33,13 @@ export function refreshPoll(poll) {
 	}
 }
 
-export function voteOnPoll(pollId, votedFor, newOption = false, token = null){
+
+export function voteOnPoll(pollId, votedFor, newOption = false, token = null, userIp){
 	return (dispatch) => {
+		console.log(userIp)
 		dispatch(showLoader());
 		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
-		makeAxiosRequest('patch', url, {votedFor, token})
+		makeAxiosRequest('patch', url, {votedFor, token, userIp})
 			.then((response) => {
 				dispatch(refreshPoll(response.data));
 				dispatch(hideLoader());
@@ -50,6 +53,7 @@ export function voteOnPoll(pollId, votedFor, newOption = false, token = null){
 }
 
 export function getPoll(pollId) {
+	console.log('getting poll')
 	const url = `${ROOT_API}/polls/single/${pollId}`;
 	return (dispatch) => {
 		makeAxiosRequest('get', url)
@@ -157,6 +161,15 @@ export function resetSuccess() {
 }
 
 // USER ACTIONS
+
+export const GET_USER_IP = 'GET_USER_IP';
+export function getUserIp() {
+	const userIp = makeAxiosRequest('get', 'https://api.ipify.org?format=json');
+	return {
+		type: GET_USER_IP,
+		payload: userIp
+	}
+}
 
 export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
 export function loginFromStorage(token) {

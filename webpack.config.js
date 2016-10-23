@@ -1,7 +1,9 @@
 const path = require('path'),
 		webpack = require('webpack'),
 		BUILD_DIR = path.resolve(__dirname, 'client/public'),
-		APP_DIR = path.resolve(__dirname, 'client/public/src/app');
+		APP_DIR = path.resolve(__dirname, 'client/public/src/app'),
+		ExtractTextPlugin = require("extract-text-webpack-plugin");
+		// extractSCSS = new ExtractTextPlugin(`${BUILD_DIR}/css/style.css`);
 
 
 const config = {
@@ -44,6 +46,7 @@ const config = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
+		// extractSCSS
 	]
 };
 

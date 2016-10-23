@@ -27,10 +27,12 @@ class PollController {
 
 	voteOnOption(req, res, id) {
 		Poll.findById(id, (err, poll) => {
-			if (err) return res.status(500).send(err)
+			if (err) return res.status(500).send(err);
+			const userIp = req.body.userIp;
 			poll.options.forEach((option) => {
 				if (option.optionName === req.body.votedFor) {
 					option.votes += 1;
+					poll.usersVoted = [...poll.usersVoted, userIp]
 				}
 				return option;
 			})
@@ -38,10 +40,11 @@ class PollController {
 		});
 	}
 
-	addNewOptionAndVote(res, id, votedFor) {
+	addNewOptionAndVote(res, id, votedFor, userIp) {
 		Poll.findById(id, (err, poll) => {
 			if (err) return res.status(500).send(err);
 			poll.options = [...poll.options, { optionName: votedFor, votes: 1 } ];
+			poll.usersVoted = [...poll.usersVoted, userIp]
 			this.savePoll(poll, res);
 		});	
 	}

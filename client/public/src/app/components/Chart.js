@@ -1,9 +1,9 @@
 import React from 'react';
 import Chart, { Pie } from 'react-chartjs-2';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 export default (props) => {
-	console.log(props.isLoading);
 	let	choices = [],
 		  labels = [],
 		  votes = [],
@@ -29,7 +29,7 @@ export default (props) => {
 			)
 		});
 	}
-	let chartData = {
+	const chartData = {
 			labels,
 			datasets: [{
 				label: '# of Votes',
@@ -37,17 +37,26 @@ export default (props) => {
 				backgroundColor,
         borderWidth: 2 
 			}]
-		}
+		},
+		fadeTransition = {
+	  	transitionEnterTimeout: 2500,
+	  	transitionName: 'fade',
+	  	transitionLeave: false
+	  };
 
 	return (
-		<div className='chart-holder'>
-			<h2 className='title'>{props.title}</h2>
-			<Pie data={chartData} width={400} height={400} options={{
-				responsive: true
-			}}/>
-			<div className='choices-container'>
-				{props.isLoading ? 'LOADING' : choices}
+		<ReactCSSTransitionGroup {...props.fadeTransition}>
+			<div className='chart-holder'>
+				<h2 className='title'>{props.title}</h2>
+				<Pie data={chartData} width={400} height={400} options={{
+					responsive: true
+				}}/>
+				{ props.alreadyVoted ? null :	
+					<div key='test' className='choices-container'>
+						{choices}
+					</div>
+				}
 			</div>
-		</div>
+		</ReactCSSTransitionGroup>
 	)
 }

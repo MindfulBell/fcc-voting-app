@@ -10,7 +10,7 @@ class NewPollForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: 2,
+			fields: 2,
 			validateError: false
 		}
 		this.addOptionField = this.addOptionField.bind(this);
@@ -18,25 +18,30 @@ class NewPollForm extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps)
 		if (!_.isEmpty(nextProps.polls.activePoll)) {
-			console.log('redirecting');
 			this.props.router.push(`/poll/${nextProps.polls.activePoll.id}`)
-
 		}
 	}
 
 	addOptionField() {
 		this.setState({
-			options: this.state.options + 1
+			fields: this.state.options + 1
 		})
 	}
 
 	submitPoll(params) {
-		let options = [];
+		let options = [],
+				optionNames = [];
 		for (let key in params) {
 			if (key !== 'title' && params[key] !== undefined) {
-				options.push({optionName: params[key], votes: 0})
+				if (optionNames.includes(params[key])) {
+					this.setState({
+						validateError: "Cannot have repeat choices!"
+					})
+					return;
+				}
+				options.push({optionName: params[key], votes: 0});
+				optionNames.push(params[key]);
 			}
 		}
 		if (!params.title || options.length < 2) {
@@ -49,7 +54,8 @@ class NewPollForm extends Component {
 			poll: { 
 				title: params.title, 
 				createdBy: this.props.user.id, 
-				options
+				options,
+				IPsVoted: []
 			}, 
 			token: this.props.user.auth.token
 		};
@@ -60,32 +66,29 @@ class NewPollForm extends Component {
 	}
 
 	render() {
-	const { handleSubmit, pristine, submitting, polls, loader } = this.props;
-	let options = [];
-	for (let i=1; i<=this.state.options; i++) {
-		options.push(
-			<div className='poll-form-option' key={i}>
-				<Field className='form-input'name={`${i}`} component='input' type='text' placeholder={`Option #${i}`}/>
-			</div>
+	const { handleSubmit, polls, loader } = this.props;
+	let fields = [];
+	for (let i=1; i <= this.state.fields; i++) {
+		fields.push(
+			<Field key={i} className='form-input'name={`${i}`} component='input' type='text' placeholder={`Option #${i}`}/>
 		)
 	}
-
 		return (
-			<div className='main'>
-			<h1 className='title'> Create a Poll </h1>
+			<div className='main new-poll'>
+			<h1 className='title'> Crea<span className='t'>t</span>e a <span className='p'>P</span>oll </h1>
 			<h2 className='subtitle'> What will you ask today? </h2>
 				<div className='new-poll-form'>
 					<form onSubmit={handleSubmit(this.submitPoll)}>
 						<Field className='form-input poll-title' name='title' component='input' type='text' placeholder='Title'/>
 						<div className='new-options-container'>
-							{options}
+							{fields}
 						</div>
 						<div className='add-option' onClick={this.addOptionField}><i className="fa fa-plus fa-2x" aria-hidden="true"></i></div>
 						{ loader.isLoading ? 
 							<i className="fa fa-spinner fa-2x loading" aria-hidden="true"></i>
-							: <button type='submit' disabled={pristine}> <i className="fa fa-check fa-2x" aria-hidden="true"></i> </button>
+							: <button type='submit'> <i className="fa fa-check fa-2x" aria-hidden="true"></i> </button>
 						}
-						<div className='message'>
+						<div className='message danger'>
 							{ this.state.validateError ? <span>{this.state.validateError}</span> : null}
 						</div>
 					</form>

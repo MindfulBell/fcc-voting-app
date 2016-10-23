@@ -12,9 +12,8 @@ import NotFoundRoute from './components/not-found';
 export default function createRoutes(store){
 
 	const userIsAuthenticated = (_, replace) => {
-		console.log(store.getState().user.auth)
 		if (!store.getState().user.loggedIn) {
-			replace(`/user/login`);
+			replace(`/`);
 		}
 	}
 
