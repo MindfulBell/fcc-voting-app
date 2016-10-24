@@ -25,7 +25,7 @@ class NewPollForm extends Component {
 
 	addOptionField() {
 		this.setState({
-			fields: this.state.options + 1
+			fields: this.state.fields + 1
 		})
 	}
 

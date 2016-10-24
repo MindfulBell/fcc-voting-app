@@ -48,7 +48,7 @@ export default (props) => {
 		<ReactCSSTransitionGroup {...props.fadeTransition}>
 			<div className='chart-holder'>
 				<h2 className='title'>{props.title}</h2>
-				<Pie data={chartData} width={400} height={400} options={{
+				<Pie data={chartData} width={500} height={500} options={{
 					responsive: true
 				}}/>
 				{ props.alreadyVoted ? null :	

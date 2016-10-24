@@ -35,19 +35,3 @@ app.get('*', function (req, res){
 app.listen(port, (req, res)=>{
 	console.log(`Listening on port ${port}`);
 })
-
-
-
-
-/*
-
-Connecting to mlab:
-
-mongodb://<dbuser>:<dbpassword>@ds011321.mlab.com:11321/fcc-tb
-
-Connecting locally:
-
-mongodb://localhost/db_name
-
-
-*/

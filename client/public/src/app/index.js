@@ -1,4 +1,6 @@
-require("!style!css!sass!../css/main.scss");
+if (process.env.NODE_ENV !== 'production') {
+	require("!style!css!sass!../css/main.scss");
+}
 
 import React from 'react';
 import { render } from 'react-dom';

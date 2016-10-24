@@ -6,9 +6,7 @@ export default class PollList extends Component {
 	constructor(props) {
 		super(props);
 	}
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.y === this.props.y
-	}
+
 	render() {
 		const appearTransition = {
 			transitionName: "fade",

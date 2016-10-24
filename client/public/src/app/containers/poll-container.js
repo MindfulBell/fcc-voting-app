@@ -18,10 +18,8 @@ class PollContainer extends Component {
 	}
 
 	componentWillMount() {
-		// Set the active poll based on the params above
 		this.props.getPoll(this.props.params.pollId);
 		this.props.resetSuccess();
-		// check if user's IP is in the poll object and send a prop to add option to display "THANKS FOR VOTING"
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -52,10 +50,6 @@ class PollContainer extends Component {
 		this.props.deletePoll(this.props.activePoll.id, this.props.user.auth.token);
 	}
 
-	checkIfVoted(pollId) {
-
-	}
-
 	render() {
 		const alreadyVoted = this.props.activePoll.usersVoted ? this.props.activePoll.usersVoted.includes(this.props.user.ip) : false,
 					fadeTransition = {
@@ -66,36 +60,34 @@ class PollContainer extends Component {
 						transitionAppearTimeout: 2500
 					};
 		return !_.isEmpty(this.props.activePoll) ? (
-			<div>
-				<Chart
-					title={this.props.activePoll.title}
-					options={this.props.activePoll.options}
-					totalVotes={this.props.activePoll.totalVotes}
-					id={this.props.activePoll.id}
-					isLoading={this.props.isLoading}
-					processVote={this.processVote}
-					alreadyVoted={alreadyVoted} 
-					fadeTransition={fadeTransition}
-				/>
-				<AddOption
-					handleDelete={this.handleDelete}
-					loggedIn={this.props.user.loggedIn}
-					title={this.props.activePoll.title}
-					createdByActiveUser={this.props.activePoll.createdBy === this.props.user.id} 
-					isLoading={this.props.isLoading}
-					addOption={this.addOption}
-					errorMessage={this.props.errorMessage}
-					activePoll={this.props.activePoll}
-					alreadyVoted={alreadyVoted}
-					fadeTransition={fadeTransition}
-				/>
-			</div>
+			this.props.errorMessage ? <div><h2 className='subtitle'>{this.props.errorMessage}</h2></div> : 
+				<div>
+					<Chart
+						title={this.props.activePoll.title}
+						options={this.props.activePoll.options}
+						totalVotes={this.props.activePoll.totalVotes}
+						id={this.props.activePoll.id}
+						isLoading={this.props.isLoading}
+						processVote={this.processVote}
+						alreadyVoted={alreadyVoted} 
+						fadeTransition={fadeTransition}
+					/>
+					<AddOption
+						handleDelete={this.handleDelete}
+						loggedIn={this.props.user.loggedIn}
+						title={this.props.activePoll.title}
+						createdByActiveUser={this.props.activePoll.createdBy === this.props.user.id} 
+						isLoading={this.props.isLoading}
+						addOption={this.addOption}
+						errorMessage={this.props.errorMessage}
+						activePoll={this.props.activePoll}
+						alreadyVoted={alreadyVoted}
+						fadeTransition={fadeTransition}
+					/>
+				</div>
 		) : <div className='large-loading'>
 					<i className="fa fa-spinner fa-5x loading" aria-hidden="true"></i>
 				</div>
-
-
-
 	}
 }
 // REDUX 

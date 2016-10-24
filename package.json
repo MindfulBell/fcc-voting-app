@@ -4,9 +4,9 @@
   "description": "Full Stack Voting App using MERN for Free Code Camp",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "start-dev": "nodemon server.js",
+    "start": "node server.js",
+    "build": "webpack --config --progress -p",
     "dev": "webpack-dev-server"
   },
   "author": "Tim Bell",
