@@ -1,7 +1,7 @@
 'use strict';
 
 let User = require('../models/User'),
-		secret = process.env.NODE_ENV === 'production' ? process.env.KEY_FOR_WEB : process.env.SECRET_KEY,
+		secret = process.env.KEY_FOR_WEB,
 		jwt = require('jsonwebtoken');
 
 let authenticate = {
