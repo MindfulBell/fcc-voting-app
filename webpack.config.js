@@ -1,7 +1,7 @@
 const path = require('path'),
 		webpack = require('webpack'),
-		BUILD_DIR = path.resolve(__dirname, 'client/public'),
-		APP_DIR = path.resolve(__dirname, 'client/public/src/app'),
+		BUILD_DIR = path.resolve(process.cwd(), 'client/public'),
+		APP_DIR = path.resolve(process.cwd(), 'client/public/src/app'),
 		ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -58,6 +58,7 @@ const config = {
         warnings: false
       }
     }),
+    new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.NoErrorsPlugin(),
 		new ExtractTextPlugin('./css/style.css'),
