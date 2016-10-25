@@ -1,10 +1,8 @@
-
-
 const path = require('path'),
-		webpack = require('webpack'),
-		BUILD_DIR = path.resolve(process.cwd(), 'client/public'),
-		APP_DIR = path.resolve(process.cwd(), 'client/public/src/app'),
-		ExtractTextPlugin = require("extract-text-webpack-plugin");
+			webpack = require('webpack'),
+			BUILD_DIR = path.resolve(process.cwd(), 'client/public'),
+			APP_DIR = path.resolve(process.cwd(), 'client/public/src/app'),
+			ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const isProduction = process.env.NODE_ENV === 'production';
 
