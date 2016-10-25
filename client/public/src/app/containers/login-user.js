@@ -11,12 +11,12 @@ class LoginUser extends Component {
 
 	componentWillReceiveProps(nextProps){
 		if (nextProps.user.loggedIn) { 
-			this.props.router.push('/'); 
+			const nextPath = this.props.pollId ? `/poll/${this.props.pollId}` : '/'
+			this.props.router.push(nextPath); 
 		}
 	}
 
 	componentWillUnmount(){
-		console.log(this.props.token);
 		if (this.props.token) {
 			localStorage.setItem('token', this.props.token);			
 		}
@@ -24,7 +24,6 @@ class LoginUser extends Component {
 	}
 
 	onFormSubmit(params) {
-		console.log(params);
 		this.props.loginRequest(params, this.props.newUser);
 	}
 

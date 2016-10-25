@@ -7,7 +7,6 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
 	switch (action.type) {
 		case SHOW_LOADER:
-		console.log('in reducer');
 			return Object.assign({}, {isLoading: true});
 		case HIDE_LOADER:
 			return Object.assign({}, {isLoading: false});

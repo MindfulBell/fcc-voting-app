@@ -105,7 +105,6 @@ export function resetSuccess() {
 
 export function voteOnPoll(pollId, votedFor, newOption = false, token = null, userIp){
 	return (dispatch) => {
-		console.log(userIp)
 		dispatch(showLoader());
 		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
 		makeAxiosRequest('patch', url, {votedFor, token, userIp})

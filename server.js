@@ -10,7 +10,7 @@ let express = require('express'),
 		userRouter = require('./server/routes/user-routes'),
 		pollRouter = require('./server/routes/poll-routes'),
 		authenticate = require('./server/middleware/authenticate'),
-		db = process.env.DB_URL;
+		db = process.env.MONGODB_MLAB || process.env.DB_URL;
 
 mongoose.connect(db);
 

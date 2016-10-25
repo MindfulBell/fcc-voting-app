@@ -83,6 +83,7 @@ class PollContainer extends Component {
 						activePoll={this.props.activePoll}
 						alreadyVoted={alreadyVoted}
 						fadeTransition={fadeTransition}
+						pollId={this.props.activePoll.id}
 					/>
 				</div>
 		) : <div className='large-loading'>
