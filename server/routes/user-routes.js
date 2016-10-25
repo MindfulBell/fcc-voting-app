@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express'),
 		authenticate = require('../middleware/authenticate'),
 		userController = require('../controllers/user-controller'),
@@ -13,9 +15,6 @@ userRouter.post('/users/register', (req, res) => {
 userRouter.post('/users/authenticate', (req, res) => {
 	authenticate.verify(req, res, false, true);
 })
-
-
-	// need Auth + checks against the current logged in user so they can update/delete
 
 
 //GET all of the users

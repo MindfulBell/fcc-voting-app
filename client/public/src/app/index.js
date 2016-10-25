@@ -1,5 +1,4 @@
 require("!style!css!sass!../css/main.scss");
-
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';

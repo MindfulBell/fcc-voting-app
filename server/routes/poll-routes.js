@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express'),
 		pollRouter = express.Router(),
 		authenticate = require('../middleware/authenticate'),
@@ -23,12 +25,11 @@ pollRouter.patch('/polls/vote/:id', (req, res) => {
 
 // AUTHENTICATION
 pollRouter.use((req, res, next) => {
-	authenticate.verify(req, res, next);
+	authenticate.verify(req, res, next, false);
 })
 
 // **POST** a new poll 
 pollRouter.post('/polls', (req, res) => {
-	console.log(req.body);
 	const newPoll = Object.assign({}, req.body.poll)
 	PollController.createPoll(newPoll, res);
 })

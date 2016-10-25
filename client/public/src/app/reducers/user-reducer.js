@@ -20,14 +20,19 @@ export default function (state = INITIAL_USER_STATE, action) {
 			}
 		case LOGIN_ERROR:
 			return Object.assign({}, state, { auth: { success: false, error: action.payload }});
+
 		case GET_USER_IP:
 			return Object.assign({}, state, { ip: action.payload.data.ip} );
+
 		case LOGOUT_USER:
 			return Object.assign({}, state, INITIAL_USER_STATE);
+
 		case CREATE_USER_ERROR:
 			return Object.assign({}, state, { createError: action.payload })
+
 		case CLEAR_CREATE_ERROR:
 			return Object.assign({}, state, { createError: '' })
+			
 		default: 
 			return state;
 	}

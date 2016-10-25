@@ -1,9 +1,12 @@
+'use strict';
+
 let User = require('../models/User'),
-		secret = process.env.SECRET_KEY,
+		secret = process.env.KEY_FOR_WEB,
 		jwt = require('jsonwebtoken');
 
 let authenticate = {
 	encode: function(req, res){
+		console.log('yo')
 		User.findOne({username: req.body.username}).select('username password id').exec((err, user) => {
 			if (err) {
 				throw err;
@@ -18,6 +21,7 @@ let authenticate = {
 				});
 			}
 			else if (user) {
+
 				if (!user.comparePassword(req.body.password)) {
 					res.json({
 						auth: {
@@ -27,6 +31,7 @@ let authenticate = {
 					});
 				}
 				else {
+
 					let token = jwt.sign({
 						username: user.username,
 						id: user._id
@@ -47,7 +52,8 @@ let authenticate = {
 		})
 	},
 
-	verify: function(req, res, next, localStorageCheck = false) {
+	verify: function(req, res, next, localStorageCheck) {
+		console.log('yo')
 		let token = req.body.token || req.query.token || req.headers['x-access-token'];
 		if (token) { 
 			jwt.verify(token, secret, (err, decoded) => {

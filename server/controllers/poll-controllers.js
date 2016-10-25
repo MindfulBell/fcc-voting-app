@@ -1,3 +1,5 @@
+'use strict';
+
 let Poll = require('../models/Poll');
 
 class PollController {
@@ -9,8 +11,9 @@ class PollController {
 		});
 	}
 
-	getPolls(res, id = {}) { 
-		Poll.find(id, (err, polls) => {
+	getPolls(res, id) { 
+		const pollId = id === undefined ? {} : id;
+		Poll.find(pollId, (err, polls) => {
 			if (err) {
 				return res.status(500).send(err);
 			}

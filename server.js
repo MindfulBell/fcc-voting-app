@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 let express = require('express'),
 		app = express(),
@@ -6,6 +8,7 @@ let express = require('express'),
 		path = require('path'),
 		bodyParser = require('body-parser'),
 		mongoose = require('mongoose'),
+		favicon = require('serve-favicon'),
 		port = process.env.PORT || 3000,
 		userRouter = require('./server/routes/user-routes'),
 		pollRouter = require('./server/routes/poll-routes'),
@@ -19,8 +22,10 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.static('client'));
+app.use(favicon(path.join(process.cwd(),'client','public','favicon.ico')));
 
 app.post('/api/authenticate', (req, res) => {
+	console.log(req.body)
 	authenticate.encode(req, res);
 })
 
@@ -35,19 +40,3 @@ app.get('*', function (req, res){
 app.listen(port, (req, res)=>{
 	console.log(`Listening on port ${port}`);
 })
-
-
-
-
-/*
-
-Connecting to mlab:
-
-mongodb://<dbuser>:<dbpassword>@ds011321.mlab.com:11321/fcc-tb
-
-Connecting locally:
-
-mongodb://localhost/db_name
-
-
-*/

@@ -57,6 +57,7 @@ checkForRepeats(value, arr) {
 }
 					
 render() {
+	const pollId = {pollId: this.props.pollId}
 	
 	const tweet = `Come vote on my sweet poll! ${this.props.title} ${window.location.href}`,
 				twitterLink = `https://twitter.com/intent/tweet?text=${tweet}`,
@@ -104,7 +105,14 @@ render() {
 							<button type='submit'> Add option and vote </button>
 						</form>
 						</div> :
-						<div className='not-loggedIn-message'> Don't like the choices? <Link to={`/user/login`}><span className='login-link'>Login</span></Link> to create a new option! </div> 
+						<div className='not-loggedIn-message'> Don't like the choices? 
+							<Link to={`/user/login`} state={pollId}>
+								<span className='login-link'>Login</span>
+							</Link> Or
+							<Link to={`/user/new`} state={pollId}>
+								<span className='login-link'> Register </span>
+							</Link>to create a new option! 
+						</div> 
 					}
 					<div className='message'>
 						{

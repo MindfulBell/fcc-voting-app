@@ -8,32 +8,16 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 class HomeIndex extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			y: 0,
-			scrolled: false
-		}
-		this.handleScroll = this.handleScroll.bind(this);
+
 	}	
 
 
-	componentWillMount() {
-		window.addEventListener('scroll', this.handleScroll);
-	}
 	componentDidMount() {
 		this.props.getPolls();
 	}
 
 	componentWillUnmount() {
 		this.props.clearPolls();
-		window.removeEventListener('scroll', this.handleScroll);
-	}
-
-	handleScroll() {
-		const y = window.pageYOffset;
-		if (y > 100 && !this.state.scrolled) {
-			this.setState({scrolled: true})
-		}
-		this.setState({y});
 	}
 
 	render() {
@@ -64,16 +48,8 @@ class HomeIndex extends Component {
 					<ReactCSSTransitionGroup {...subtitleTransition}>
 						<h3 className='subtitle'> Choose Wisely... </h3>
 					</ReactCSSTransitionGroup>
-					<ReactCSSTransitionGroup transitionName="fade" {...titleAndNTransition} >
-						<div>
-							<i 
-								className="fa fa-arrow-down fa-3x" 
-								aria-hidden="true"
-								style={this.state.y > 100 || this.state.scrolled ? {opacity: 0} : {}}></i>
-						</div>
-					</ReactCSSTransitionGroup>
 				</div>
-				<PollList pollsList={this.props.pollsList} y={this.state.y}/>
+				<PollList pollsList={this.props.pollsList} />
 			</div>
 		)
 	}

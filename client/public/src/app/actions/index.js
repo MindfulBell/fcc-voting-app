@@ -33,37 +33,17 @@ export function refreshPoll(poll) {
 	}
 }
 
-
-export function voteOnPoll(pollId, votedFor, newOption = false, token = null, userIp){
-	return (dispatch) => {
-		console.log(userIp)
-		dispatch(showLoader());
-		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
-		makeAxiosRequest('patch', url, {votedFor, token, userIp})
-			.then((response) => {
-				dispatch(refreshPoll(response.data));
-				dispatch(hideLoader());
-			})
-			.catch((e) => {
-				console.log(e);
-				dispatch(hideLoader());
-				// handle vote fail
-			})
+export const GET_POLL_FAIL = 'GET_POLLS';
+function getPollFail() {
+	return {
+		type: GET_POLL_FAIL
 	}
 }
 
-export function getPoll(pollId) {
-	console.log('getting poll')
-	const url = `${ROOT_API}/polls/single/${pollId}`;
-	return (dispatch) => {
-		makeAxiosRequest('get', url)
-			.then((response) => {
-				dispatch(refreshPoll(response.data));
-			})
-			.catch((e) => {
-				console.log(e);
-				// handle get vote fail
-			})		
+export const VOTE_FAIL = 'VOTE_FAIL';
+function voteFail() {
+	return {
+		type: VOTE_FAIL
 	}
 }
 
@@ -81,27 +61,6 @@ export function clearPolls() {
 	}
 }
 
-export function createNewPoll(pollWithToken){
-	// request to make a poll and add it to database 
-	console.log(pollWithToken);
-	return (dispatch) => {
-		dispatch(showLoader());
-
-		return makeAxiosRequest('post', `${ROOT_API}/polls`, pollWithToken)
-			.then((response) => {
-				console.log('succeeded');
-				dispatch(refreshPoll(response.data));
-				dispatch(hideLoader());
-				dispatch(createPollSuccess());
-			})
-			.catch((e) => {
-				console.log(e)
-				dispatch(hideLoader());
-				dispatch(createPollFail());
-			});
-	}
-}
-
 export const CREATE_POLL_SUCCESS = 'CREATE_POLL_SUCCESS';
 function createPollSuccess() {
 	return {
@@ -113,22 +72,6 @@ export const CREATE_POLL_FAIL = 'CREATE_POLL_FAIL';
 function createPollFail() {
 	return {
 		type: CREATE_POLL_FAIL
-	}
-}
-
-export function deletePoll(id, token) {
-	return (dispatch) => {
-		dispatch(showLoader());
-
-		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
-			.then((response) => {
-				dispatch(deletePollSuccess());
-				dispatch(hideLoader());
-		}).catch((e)=>{ 
-				console.log(e);
-				dispatch(deletePollFail(e));
-				dispatch(hideLoader());
-		});
 	}
 }
 
@@ -160,6 +103,69 @@ export function resetSuccess() {
 	}
 }
 
+export function voteOnPoll(pollId, votedFor, newOption = false, token = null, userIp){
+	return (dispatch) => {
+		dispatch(showLoader());
+		const url = newOption ? `${ROOT_API}/polls/${pollId}`: `${ROOT_API}/polls/vote/${pollId}`;
+		makeAxiosRequest('patch', url, {votedFor, token, userIp})
+			.then((response) => {
+				dispatch(refreshPoll(response.data));
+				dispatch(hideLoader());
+			})
+			.catch((e) => {
+				dispatch(hideLoader());
+				dispatch(voteFail());
+			})
+	}
+}
+
+export function getPoll(pollId) {
+	const url = `${ROOT_API}/polls/single/${pollId}`;
+	return (dispatch) => {
+		makeAxiosRequest('get', url)
+			.then((response) => {
+				dispatch(refreshPoll(response.data));
+			})
+			.catch((e) => {
+				console.log(e);
+				dispatch(getPollFail())
+			})		
+	}
+}
+
+export function createNewPoll(pollWithToken){
+	return (dispatch) => {
+		dispatch(showLoader());
+		return makeAxiosRequest('post', `${ROOT_API}/polls`, pollWithToken)
+			.then((response) => {
+				console.log('succeeded');
+				dispatch(refreshPoll(response.data));
+				dispatch(hideLoader());
+				dispatch(createPollSuccess());
+			})
+			.catch((e) => {
+				console.log(e)
+				dispatch(hideLoader());
+				dispatch(createPollFail());
+			});
+	}
+}
+
+export function deletePoll(id, token) {
+	return (dispatch) => {
+		dispatch(showLoader());
+		return makeAxiosRequest('delete', `${ROOT_API}/polls/${id}`, { token })
+			.then((response) => {
+				dispatch(deletePollSuccess());
+				dispatch(hideLoader());
+		}).catch((e)=>{ 
+				console.log(e);
+				dispatch(deletePollFail(e));
+				dispatch(hideLoader());
+		});
+	}
+}
+
 // USER ACTIONS
 
 export const GET_USER_IP = 'GET_USER_IP';
@@ -168,63 +174,6 @@ export function getUserIp() {
 	return {
 		type: GET_USER_IP,
 		payload: userIp
-	}
-}
-
-export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
-export function loginFromStorage(token) {
-	return (dispatch) => {
-		return makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
-			.then((response) => {
-				const user = {
-					data: {
-						auth: { token },
-						username: response.data.username,
-						id: response.data.id
-					}
-				}
-				dispatch(loginUser(user))
-			})
-			.catch((e) => {
-				console.log('Token may have expired')
-		})
-	}
-}
-
-
-export function loginRequest(user = {}, newUser = false) {
-	return (dispatch) => {
-		dispatch(showLoader());
-		if (newUser) {
-			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
-				.then((response) => {
-					if (response.data.success === false) {
-						dispatch(createUserError(response.data.message));
-						dispatch(hideLoader());
-					}
-					else {
-						makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-							.then((response) => {
-								dispatch(loginUser(response));
-								dispatch(hideLoader()); 
-							})
-					}
-			}).catch((e) => { 
-				dispatch(createUserError(e));
-				dispatch(hideLoader());
-			});
-		}
-
-		else {
-			return makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
-				.then((response) => { 
-					dispatch(loginUser(response));
-					dispatch(hideLoader()); 
-				})
-				.catch((e) => { 
-					dispatch(userLoginError(e));
-			});
-		}
 	}
 }
 
@@ -266,12 +215,68 @@ export function clearCreateError() {
 	}
 }
 
+export const LOGIN_FROM_STORAGE = 'LOGIN_FROM_STORAGE';
+export function loginFromStorage(token) {
+	return (dispatch) => {
+		return makeAxiosRequest('post', `${ROOT_API}/users/authenticate`, { token })
+			.then((response) => {
+				const user = {
+					data: {
+						auth: { token },
+						username: response.data.username,
+						id: response.data.id
+					}
+				}
+				dispatch(loginUser(user))
+			})
+			.catch((e) => {
+				console.log('Token may have expired')
+		})
+	}
+}
+
+export function loginRequest(user = {}, newUser = false) {
+	return (dispatch) => {
+		dispatch(showLoader());
+		if (newUser) {
+			return makeAxiosRequest('post', `${ROOT_API}${USER_API}/register`, user)
+				.then((response) => {
+					if (response.data.success === false) {
+						dispatch(createUserError(response.data.message));
+						dispatch(hideLoader());
+					}
+					else {
+						makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+							.then((response) => {
+								dispatch(loginUser(response));
+								dispatch(hideLoader()); 
+							})
+					}
+			}).catch((e) => { 
+				dispatch(createUserError(e));
+				dispatch(hideLoader());
+			});
+		}
+
+		else {
+			console.log("YOOO")
+			return makeAxiosRequest('post', `${ROOT_API}/authenticate`, user)
+				.then((response) => { 
+					dispatch(loginUser(response));
+					dispatch(hideLoader()); 
+				})
+				.catch((e) => { 
+					dispatch(userLoginError(e));
+					dispatch(hideLoader());
+			});
+		}
+	}
+}
 
 // LOADER ACTIONS
 
 export const SHOW_LOADER = 'SHOW_LOADER';
 function showLoader() {
-	console.log('showing')
 	return {
 		type: SHOW_LOADER
 	}
@@ -279,11 +284,7 @@ function showLoader() {
 
 export const HIDE_LOADER = 'HIDE_LOADER';
 function hideLoader() {
-	console.log('hiding')
 	return {
 		type: HIDE_LOADER
 	}
 }
-
-
-
