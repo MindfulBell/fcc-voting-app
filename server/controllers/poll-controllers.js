@@ -1,3 +1,5 @@
+'use strict';
+
 let Poll = require('../models/Poll');
 
 class PollController {

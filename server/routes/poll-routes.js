@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express'),
 		pollRouter = express.Router(),
 		authenticate = require('../middleware/authenticate'),

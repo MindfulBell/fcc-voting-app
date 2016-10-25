@@ -1,3 +1,5 @@
+'use strict';
+
 let User = require('../models/User');
 
 class UserController {

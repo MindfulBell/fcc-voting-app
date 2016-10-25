@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express'),
 		authenticate = require('../middleware/authenticate'),
 		userController = require('../controllers/user-controller'),

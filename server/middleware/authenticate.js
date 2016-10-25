@@ -1,3 +1,5 @@
+'use strict';
+
 let User = require('../models/User'),
 		secret = process.env.SECRET_KEY,
 		jwt = require('jsonwebtoken');
