@@ -1,6 +1,8 @@
 'use strict';
 
-require('dotenv').config();
+if (process.env.NODE_ENV === 'production') {
+	require('dotenv').config();
+}
 let express = require('express'),
 		app = express(),
 		cors = require('cors'),
@@ -13,7 +15,7 @@ let express = require('express'),
 		userRouter = require('./server/routes/user-routes'),
 		pollRouter = require('./server/routes/poll-routes'),
 		authenticate = require('./server/middleware/authenticate'),
-		db = process.env.MONGODB_MLAB;
+		db = process.env.NODE_ENV === 'production' ? process.env.MONGODB_MLAB : process.env.DB_URL,
 
 mongoose.connect(db);
 
