@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path'),
 		webpack = require('webpack'),
 		BUILD_DIR = path.resolve(process.cwd(), 'client/public'),
