@@ -6,6 +6,7 @@ let express = require('express'),
 		path = require('path'),
 		bodyParser = require('body-parser'),
 		mongoose = require('mongoose'),
+		favicon = require('favicon'),
 		port = process.env.PORT || 3000,
 		userRouter = require('./server/routes/user-routes'),
 		pollRouter = require('./server/routes/poll-routes'),
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.static('client'));
+app.use(favicon(path.join(__dirname,'client','public','favicon.ico'));
 
 app.post('/api/authenticate', (req, res) => {
 	authenticate.encode(req, res);

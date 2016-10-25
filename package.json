@@ -36,6 +36,7 @@
     "redux-form": "^6.0.5",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
+    "serve-favicon": "^2.3.0",
     "url-loader": "^0.5.7"
   },
   "devDependencies": {
