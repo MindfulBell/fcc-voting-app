@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 let express = require('express'),
 		app = express(),
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.static('client'));
-app.use(favicon(path.join(__dirname,'client','public','favicon.ico'));
+app.use(favicon(path.join(process.cwd(),'client','public','favicon.ico'));
 
 app.post('/api/authenticate', (req, res) => {
 	authenticate.encode(req, res);
