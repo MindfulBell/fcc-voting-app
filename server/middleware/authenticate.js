@@ -49,7 +49,7 @@ let authenticate = {
 		})
 	},
 
-	verify: function(req, res, next, localStorageCheck = false) {
+	verify: function(req, res, next, localStorageCheck) {
 		let token = req.body.token || req.query.token || req.headers['x-access-token'];
 		if (token) { 
 			jwt.verify(token, secret, (err, decoded) => {
